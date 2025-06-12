@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +18,6 @@ import com.gate.houi.hoseoHoui.domain.dtoSet.NoticeResponseDTO;
 import com.gate.houi.hoseoHoui.service.NoticeService;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PutMapping;
 
 
 
@@ -45,7 +45,7 @@ public class NoticeController {
         return ResponseEntity.ok(noticeService.createNotice(noticeRequestDTO));
     }
     // 공지사항 수정
-    @PutMapping("/edit/{id}")
+    @PatchMapping("/edit/{id}")
     public ResponseEntity<NoticeResponseDTO> updateNotice(@PathVariable Long id, @RequestBody NoticeRequestDTO noticeRequestDTO) {
         return ResponseEntity.ok(noticeService.updateNotice(id, noticeRequestDTO));
     }
