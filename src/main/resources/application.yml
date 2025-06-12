@@ -1,0 +1,13 @@
+spring:
+    application:
+        name: hoseoHoui
+    profiles:
+        active: local
+    web:
+        resources:
+            add-mappings: false
+server:
+    port: 8080
+    servlet:
+        context-path: /api/v1
+
