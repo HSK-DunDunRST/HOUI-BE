@@ -33,7 +33,7 @@ public class StudentEntity extends BaseTimeEntity{
     private Long id;
 
     @Column(name = "student_id", nullable = false)
-    private String student_id;
+    private Long studentId;
     
     @Column(name = "student_name", nullable = false)
     private String student_name;
