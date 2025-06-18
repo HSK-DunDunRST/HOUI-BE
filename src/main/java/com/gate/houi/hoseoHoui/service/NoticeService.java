@@ -84,13 +84,13 @@ public class NoticeService {
     }
 
     // 공지사항 엔티티를 DTO로 변환하는 유틸리티 메서드
-    private NoticeResponseDTO convertToDto(NoticeEntity notice) {
+    private NoticeResponseDTO convertToDto(NoticeEntity noticeEntity) {
         return NoticeResponseDTO.builder()
-                .id(notice.getId())
-                .noticeTitle(notice.getNoticeTitle())
-                .noticeContent(notice.getNoticeContent())
+                .id(noticeEntity.getId())
+                .noticeTitle(noticeEntity.getNoticeTitle())
+                .noticeContent(noticeEntity.getNoticeContent())
                 // 생성일자를 문자열로 변환하여 저장
-                .noticeCreatedAt(notice.getCreatedAt().toString())
+                .noticeCreatedAt(noticeEntity.getCreatedAt().toString())
                 .build();
     }
 }
