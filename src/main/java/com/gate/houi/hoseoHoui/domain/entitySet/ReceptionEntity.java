@@ -1,9 +1,12 @@
 package com.gate.houi.hoseoHoui.domain.entitySet;
 
 import com.gate.houi.hoseoHoui.domain.common.BaseTimeEntity;
+import com.gate.houi.hoseoHoui.domain.enumSet.ReceptionType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,11 +36,13 @@ public class ReceptionEntity extends BaseTimeEntity {
     @Column(name = "symptoms_content", nullable = false)
     private String symptomsContent;
 
+    /**
+     * 진료 접수 상태
+     * WAITING: 대기중
+     * COMPLETED: 완료
+     */
+    @Enumerated(EnumType.STRING)
     @Column(name = "reception_status", nullable = false)
-    private String receptionStatus;
+    private ReceptionType receptionStatus;
     
-    @ManyToOne(targetEntity = StudentEntity.class ,fetch = FetchType.LAZY)
-    @JoinColumn(name = "student_id", nullable = false)
-    private StudentEntity studentEntity;
-
 }

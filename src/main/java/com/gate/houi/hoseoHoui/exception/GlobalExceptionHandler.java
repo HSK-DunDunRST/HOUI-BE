@@ -4,6 +4,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
+
 import com.gate.houi.hoseoHoui.domain.enumSet.ErrorType;
 
 @RestControllerAdvice
@@ -38,6 +40,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(
             ErrorResponse.of(ErrorType.INTERNAL_SERVER_ERROR),
             ErrorType.INTERNAL_SERVER_ERROR.getErrorCode()
+        );
+    }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNoHandlerFoundException(NoHandlerFoundException e, HttpServletRequest request) {
+        return new ResponseEntity<>(
+            ErrorResponse.of(ErrorType.BAD_REQUEST),
+            ErrorType.BAD_REQUEST.getErrorCode()
         );
     }
 }

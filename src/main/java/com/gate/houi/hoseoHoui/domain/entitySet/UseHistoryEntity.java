@@ -36,9 +36,4 @@ public class UseHistoryEntity extends BaseTimeEntity {
     
     @Column(name = "prescription_content", nullable = false)
     private String prescriptionContent;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "student_id")  // 외래키 컬럼명
-    private StudentEntity studentEntity;
-
 }
