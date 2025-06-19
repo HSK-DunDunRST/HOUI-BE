@@ -7,16 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.gate.houi.hoseoHoui.domain.dtoSet.NoticeRequestDTO;
-import com.gate.houi.hoseoHoui.domain.dtoSet.NoticeResponseDTO;
 import com.gate.houi.hoseoHoui.domain.dtoSet.ReceptionRequestDTO;
 import com.gate.houi.hoseoHoui.domain.dtoSet.ReceptionResponseDTO;
-import com.gate.houi.hoseoHoui.domain.dtoSet.UseHistoryResponseDTO;
-import com.gate.houi.hoseoHoui.domain.entitySet.NoticeEntity;
 import com.gate.houi.hoseoHoui.domain.entitySet.ReceptionEntity;
-import com.gate.houi.hoseoHoui.domain.entitySet.UseHistoryEntity;
 import com.gate.houi.hoseoHoui.domain.enumSet.ReceptionType;
-import com.gate.houi.hoseoHoui.exception.DataNotFoundException;
 import com.gate.houi.hoseoHoui.exception.RequiredDataMissingException;
 import com.gate.houi.hoseoHoui.repository.ReceptionRepository;
 
