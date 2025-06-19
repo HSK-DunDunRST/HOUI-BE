@@ -44,5 +44,11 @@ public class ReceptionEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "reception_status", nullable = false)
     private ReceptionType receptionStatus;
+
+    @Column(name = "student_id", nullable = false)
+    private String studentId;
+    
+    @Column(name = "student_name", nullable = false)
+    private String studentName;
     
 }
