@@ -39,7 +39,8 @@ public class SecurityConfig {
                 .userInfoEndpoint(userInfo -> userInfo
                     .userService(customOAuth2UserService)
                 )
-                .defaultSuccessUrl("/", true)
+                // 로그인 성공 후 테스트용 사용자 정보 창으로 이동
+                .defaultSuccessUrl("/oauth/user-info", true)
             )
             .logout(logout -> logout
                 .logoutSuccessUrl("/")
