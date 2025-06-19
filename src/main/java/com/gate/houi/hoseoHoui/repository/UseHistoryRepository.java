@@ -9,6 +9,6 @@ import com.gate.houi.hoseoHoui.domain.entitySet.UseHistoryEntity;
 @Repository
 public interface UseHistoryRepository extends JpaRepository<UseHistoryEntity, Long> {
 
-    // StudentEntity 객체의 studentId 항목으로 조회
-    List<UseHistoryEntity> findByStudentEntity_StudentId(Long studentId);
+    // UseHistoryEntity 객체의 studentId 항목으로 조회
+    List<UseHistoryEntity> findByStudentId(String studentId);
 }
