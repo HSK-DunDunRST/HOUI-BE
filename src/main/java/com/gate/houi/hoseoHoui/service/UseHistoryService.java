@@ -36,7 +36,7 @@ public class UseHistoryService {
     // 특정 학생의 이용내역 조회 후 DTO 리스트로 반환
     @Transactional
     public List<UseHistoryResponseDTO> getHistoriesByStudentId(Long studentId) {
-        List<UseHistoryEntity> histories = useHistoryRepository.findByStudentEntity_StudentId(studentId);
+        List<UseHistoryEntity> histories = useHistoryRepository.findByStudentId(studentId);
         if (histories == null || histories.isEmpty()) {
             throw new DataNotFoundException("이용한 내역이 없어요."); // 예외 처리: 이용내역이 없을 경우
         }
