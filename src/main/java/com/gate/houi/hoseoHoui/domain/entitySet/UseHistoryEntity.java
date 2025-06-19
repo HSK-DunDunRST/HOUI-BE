@@ -36,4 +36,10 @@ public class UseHistoryEntity extends BaseTimeEntity {
     
     @Column(name = "prescription_content", nullable = false)
     private String prescriptionContent;
+    
+    @Column(name = "student_id", nullable = false)
+    private String studentId;
+    
+    @Column(name = "student_name", nullable = false)
+    private String studentName;
 }
