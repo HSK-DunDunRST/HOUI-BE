@@ -30,7 +30,7 @@ public class UseHistoryController {
 
     // 각 학생의 이용내역 조회
     @GetMapping("/{studentId}")
-    public ResponseEntity<List<UseHistoryResponseDTO>> getAllHistory(@PathVariable Long studentId, UseHistoryResponseDTO useHistoryResponseDTO) {
+    public ResponseEntity<List<UseHistoryResponseDTO>> getAllHistory(@PathVariable String studentId, UseHistoryResponseDTO useHistoryResponseDTO) {
         return ResponseEntity.ok(useHistoryService.getHistoriesByStudentId(studentId));
     }
 }

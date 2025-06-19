@@ -9,8 +9,6 @@ import com.gate.houi.hoseoHoui.domain.entitySet.ReceptionEntity;
 
 @Repository
 public interface ReceptionRepository extends JpaRepository<ReceptionEntity, Long> {
-
     // ReceptionEntity 객체의 studentId 항목으로 조회
-    List<ReceptionEntity> findByStudentEntity_StudentId(Long studentId);
-
+    List<ReceptionEntity> findByStudentId(String studentId);
 }
