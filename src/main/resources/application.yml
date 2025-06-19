@@ -2,7 +2,7 @@ spring:
     application:
         name: hoseoHoui
     profiles:
-        active: local
+        active: local, oauth
     web:
         resources:
             add-mappings: false

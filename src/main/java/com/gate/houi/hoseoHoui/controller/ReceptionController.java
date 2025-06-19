@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +34,12 @@ public class ReceptionController {
 
     // 새로운 진료접수 등록
     @PostMapping("/register")
-    public ResponseEntity<ReceptionResponseDTO> addReception(@RequestBody ReceptionRequestDTO receptionRequestDTO) {
-        return ResponseEntity.ok(receptionService.RegisterReception(receptionRequestDTO));
+    public ResponseEntity<ReceptionResponseDTO> addReception(@RequestBody ReceptionRequestDTO receptionRequestDTO,
+                                                            @AuthenticationPrincipal OAuth2User oauth2User) {
+                                                                 // OAuth2User에서 이메일과 이름 정보 추출
+        String studentId = (String) oauth2User.getAttribute("studentId");
+        String studentName = (String) oauth2User.getAttribute("name");
+        
+        return ResponseEntity.ok(receptionService.RegisterReception(receptionRequestDTO, studentId, studentName));
     }
 }

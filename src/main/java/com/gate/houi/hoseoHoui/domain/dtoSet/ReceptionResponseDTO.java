@@ -10,4 +10,5 @@ public class  ReceptionResponseDTO {
     private String symptomsContent;
     private String receptionStatus;
     private String receptionCreatedAt;
+    
 }

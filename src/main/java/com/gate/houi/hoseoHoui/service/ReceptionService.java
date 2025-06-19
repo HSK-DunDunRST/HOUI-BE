@@ -40,7 +40,7 @@ public class ReceptionService {
 
     @Transactional
     // 새로운 접수 객체 생성 후 DTO로 반환
-    public ReceptionResponseDTO RegisterReception(ReceptionRequestDTO receptionRequestDTO) {
+    public ReceptionResponseDTO RegisterReception(ReceptionRequestDTO receptionRequestDTO, String studentId, String studentName) {
         // 필수 데이터(진료 증상)가 전달되지 않았으면 예외 발생
         if (receptionRequestDTO.getSymptomsContent().isEmpty()) {
             throw new RequiredDataMissingException();
@@ -50,6 +50,8 @@ public class ReceptionService {
         ReceptionEntity receptionEntity = ReceptionEntity.builder()
                 .symptomsContent(receptionRequestDTO.getSymptomsContent())
                 .receptionStatus(ReceptionType.WAITING) // 기본 상태는 대기
+                .studentId(studentId) // OAuth2User에서 추출한 학번
+                .studentName(studentName) // OAuth2User에서 추출한 이름
                 .build();
         
         // 엔티티 저장 후 결과 DTO로 변환하여 반환
