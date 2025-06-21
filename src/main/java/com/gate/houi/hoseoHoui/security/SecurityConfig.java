@@ -23,7 +23,9 @@ public class SecurityConfig {
 
     @Autowired
     private final AuthService authService;
-    
+    @Autowired
+    private final AuthenticationEntryPointHandler authenticationEntryPointHandler;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -39,8 +41,11 @@ public class SecurityConfig {
                 .userInfoEndpoint(userInfo -> userInfo
                     .userService(authService)
                 )
-                // 로그인 성공 후 테스트용 사용자 정보 창으로 이동
-                .defaultSuccessUrl("/oauth/user-info", true)
+                // 로그인 성공 후 최근 공지사항 조회로 이동
+                .defaultSuccessUrl("/notice", true)
+            )
+            .exceptionHandling(exceptionHandling -> 
+                exceptionHandling.authenticationEntryPoint(authenticationEntryPointHandler)
             )
             .logout(logout -> logout
                 .logoutSuccessUrl("/")
