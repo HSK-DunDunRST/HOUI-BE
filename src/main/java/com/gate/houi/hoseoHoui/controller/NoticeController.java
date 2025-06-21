@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gate.houi.hoseoHoui.domain.dtoSet.NoticeRequestDTO;
-import com.gate.houi.hoseoHoui.domain.dtoSet.NoticeResponseDTO;
+import com.gate.houi.hoseoHoui.dto.notice.NoticeRequestDTO;
+import com.gate.houi.hoseoHoui.dto.notice.NoticeResponseDTO;
 import com.gate.houi.hoseoHoui.service.NoticeService;
 
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.gate.houi.hoseoHoui.domain.enumSet;
+package com.gate.houi.hoseoHoui.domain.enumType;
 
 import lombok.Getter;
 

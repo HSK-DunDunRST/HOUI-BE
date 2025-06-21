@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.gate.houi.hoseoHoui.domain.entitySet.ReceptionEntity;
+import com.gate.houi.hoseoHoui.domain.entity.ReceptionEntity;
 
 @Repository
 public interface ReceptionRepository extends JpaRepository<ReceptionEntity, Long> {

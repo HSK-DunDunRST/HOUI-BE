@@ -2,7 +2,8 @@ package com.gate.houi.hoseoHoui.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.gate.houi.hoseoHoui.domain.dtoSet.UseHistoryResponseDTO;
+
+import com.gate.houi.hoseoHoui.dto.history.UseHistoryResponseDTO;
 import com.gate.houi.hoseoHoui.service.UseHistoryService;
 
 import lombok.RequiredArgsConstructor;

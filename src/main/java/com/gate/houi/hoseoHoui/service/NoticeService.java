@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.gate.houi.hoseoHoui.domain.dtoSet.NoticeRequestDTO;
-import com.gate.houi.hoseoHoui.domain.dtoSet.NoticeResponseDTO;
-import com.gate.houi.hoseoHoui.domain.entitySet.NoticeEntity;
+import com.gate.houi.hoseoHoui.domain.entity.NoticeEntity;
+import com.gate.houi.hoseoHoui.dto.notice.NoticeRequestDTO;
+import com.gate.houi.hoseoHoui.dto.notice.NoticeResponseDTO;
 import com.gate.houi.hoseoHoui.exception.DataNotFoundException;
 import com.gate.houi.hoseoHoui.exception.RequiredDataMissingException;
 import com.gate.houi.hoseoHoui.repository.NoticeRepository;

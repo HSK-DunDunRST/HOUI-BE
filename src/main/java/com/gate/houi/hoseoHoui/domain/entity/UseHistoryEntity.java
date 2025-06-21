@@ -1,4 +1,4 @@
-package com.gate.houi.hoseoHoui.domain.entitySet;
+package com.gate.houi.hoseoHoui.domain.entity;
 
 import com.gate.houi.hoseoHoui.domain.common.BaseTimeEntity;
 

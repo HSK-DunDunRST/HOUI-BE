@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gate.houi.hoseoHoui.domain.dtoSet.ReceptionRequestDTO;
-import com.gate.houi.hoseoHoui.domain.dtoSet.ReceptionResponseDTO;
+import com.gate.houi.hoseoHoui.dto.reception.ReceptionRequestDTO;
+import com.gate.houi.hoseoHoui.dto.reception.ReceptionResponseDTO;
 import com.gate.houi.hoseoHoui.service.ReceptionService;
 
 import lombok.RequiredArgsConstructor;

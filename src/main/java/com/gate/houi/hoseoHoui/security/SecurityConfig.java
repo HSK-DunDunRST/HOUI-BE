@@ -10,7 +10,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.gate.houi.hoseoHoui.service.CustomOAuth2UserService;
+import com.gate.houi.hoseoHoui.service.AuthService;
 
 import java.util.Arrays;
 
@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 
     @Autowired
-    private final CustomOAuth2UserService customOAuth2UserService;
+    private final AuthService authService;
     
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -37,7 +37,7 @@ public class SecurityConfig {
             )
             .oauth2Login(oauth2 -> oauth2
                 .userInfoEndpoint(userInfo -> userInfo
-                    .userService(customOAuth2UserService)
+                    .userService(authService)
                 )
                 // 로그인 성공 후 테스트용 사용자 정보 창으로 이동
                 .defaultSuccessUrl("/oauth/user-info", true)

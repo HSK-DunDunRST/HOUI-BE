@@ -1,4 +1,4 @@
-package com.gate.houi.hoseoHoui.domain.dtoSet;
+package com.gate.houi.hoseoHoui.dto.notice;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReceptionRequestDTO {
-    private String symptomsContent;
+public class NoticeRequestDTO {
+    private String noticeTitle;
+    private String noticeContent;
 }

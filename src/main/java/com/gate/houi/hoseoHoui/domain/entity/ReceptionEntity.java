@@ -1,7 +1,7 @@
-package com.gate.houi.hoseoHoui.domain.entitySet;
+package com.gate.houi.hoseoHoui.domain.entity;
 
 import com.gate.houi.hoseoHoui.domain.common.BaseTimeEntity;
-import com.gate.houi.hoseoHoui.domain.enumSet.ReceptionType;
+import com.gate.houi.hoseoHoui.domain.enumType.ReceptionType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

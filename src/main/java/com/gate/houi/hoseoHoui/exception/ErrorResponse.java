@@ -1,6 +1,6 @@
 package com.gate.houi.hoseoHoui.exception;
 
-import com.gate.houi.hoseoHoui.domain.enumSet.ErrorType;
+import com.gate.houi.hoseoHoui.domain.enumType.ErrorType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

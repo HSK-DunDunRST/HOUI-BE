@@ -4,7 +4,8 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import com.gate.houi.hoseoHoui.domain.entitySet.UseHistoryEntity;
+
+import com.gate.houi.hoseoHoui.domain.entity.UseHistoryEntity;
 
 @Repository
 public interface UseHistoryRepository extends JpaRepository<UseHistoryEntity, Long> {

@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gate.houi.hoseoHoui.domain.dtoSet.UseHistoryResponseDTO;
-import com.gate.houi.hoseoHoui.domain.entitySet.UseHistoryEntity;
+import com.gate.houi.hoseoHoui.domain.entity.UseHistoryEntity;
+import com.gate.houi.hoseoHoui.dto.history.UseHistoryResponseDTO;
 import com.gate.houi.hoseoHoui.exception.DataNotFoundException;
 import com.gate.houi.hoseoHoui.repository.UseHistoryRepository;
 

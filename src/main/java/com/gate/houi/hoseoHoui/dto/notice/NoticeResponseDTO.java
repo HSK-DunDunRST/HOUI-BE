@@ -1,4 +1,4 @@
-package com.gate.houi.hoseoHoui.domain.dtoSet;
+package com.gate.houi.hoseoHoui.dto.notice;
 
 import lombok.Builder;
 import lombok.Getter;
