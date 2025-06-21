@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gate.houi.hoseoHoui.domain.entity.StudentEntity;
-import com.gate.houi.hoseoHoui.dto.auth.OAuthLoginRequest;
+import com.gate.houi.hoseoHoui.dto.auth.OAuthRefreshTokenRequest;
 import com.gate.houi.hoseoHoui.dto.auth.OAuthLoginResponse;
 import com.gate.houi.hoseoHoui.repository.StudentRepository;
 import com.gate.houi.hoseoHoui.security.JwtTokenProvider;
@@ -27,7 +27,7 @@ public class AuthService extends DefaultOAuth2UserService{
     private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional
-    public OAuthLoginResponse loginWithGoogle(OAuthLoginRequest request) {
+    public OAuthLoginResponse loginWithGoogle(OAuthRefreshTokenRequest request) {
         // Google API를 통해 ID 토큰 검증 및 사용자 정보 가져오기
         GoogleIdToken idToken = verifyGoogleIdToken(request.getToken());
         GoogleIdToken.Payload payload = idToken.getPayload();

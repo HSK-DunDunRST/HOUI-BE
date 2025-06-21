@@ -5,7 +5,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -25,24 +27,30 @@ public class SecurityConfig {
     private final AuthService authService;
     @Autowired
     private final AuthenticationEntryPointHandler authenticationEntryPointHandler;
+    @Autowired
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    @Autowired
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정 추가
-            .csrf(csrf -> csrf.disable()) // CSRF 보호 비활성화 (REST API에서는 일반적으로 비활성화)
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/", "/login/**", "/oauth2/**", "/oauth/**").permitAll() // OAuth 관련 경로 명시적으로 허용
-                .requestMatchers("/reception/**").authenticated() // 진료 접수는 인증 필요
-                .requestMatchers("/history/**").authenticated() // 이용 내역은 인증 필요
+                .requestMatchers("/", "/login/**", "/oauth2/**", "/oauth/**").permitAll()
+                .requestMatchers("/notice").permitAll() // 공지사항 조회는 모든 사용자에게 허용
+                .requestMatchers("/reception/**").authenticated()
+                .requestMatchers("/history/**").authenticated()
                 .anyRequest().authenticated()
             )
             .oauth2Login(oauth2 -> oauth2
                 .userInfoEndpoint(userInfo -> userInfo
                     .userService(authService)
                 )
-                // 로그인 성공 후 최근 공지사항 조회로 이동
-                .defaultSuccessUrl("/notice", true)
+                .successHandler(oAuth2AuthenticationSuccessHandler)
             )
             .exceptionHandling(exceptionHandling -> 
                 exceptionHandling.authenticationEntryPoint(authenticationEntryPointHandler)
@@ -51,7 +59,8 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/")
                 .clearAuthentication(true)
                 .invalidateHttpSession(true)
-            );
+            )
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
             
         return http.build();
     }
@@ -59,7 +68,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*")); // 실제 환경에서는 특정 도메인으로 제한하세요
+        configuration.setAllowedOrigins(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);

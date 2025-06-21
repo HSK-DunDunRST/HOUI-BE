@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -24,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/notice")
 @RequiredArgsConstructor
+@PreAuthorize("isAuthenticated()") // 기본적으로 모든 엔드포인트는 인증 필요
 public class NoticeController {
 
     @Autowired
@@ -41,7 +45,11 @@ public class NoticeController {
     }
     // 공지사항 등록
     @PostMapping("/add")
-    public ResponseEntity<NoticeResponseDTO> addNotice(@RequestBody NoticeRequestDTO noticeRequestDTO) {
+    public ResponseEntity<NoticeResponseDTO> addNotice(
+        @AuthenticationPrincipal UserDetails userDetails,
+        @RequestBody NoticeRequestDTO noticeRequestDTO) {
+        
+        System.out.println("현재 인증된 사용자: " + userDetails.getUsername());
         return ResponseEntity.ok(noticeService.createNotice(noticeRequestDTO));
     }
     // 공지사항 수정
