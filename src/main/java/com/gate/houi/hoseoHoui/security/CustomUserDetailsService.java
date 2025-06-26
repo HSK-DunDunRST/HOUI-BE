@@ -20,12 +20,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        StudentEntity studentEntity = studentRepository.findById(Long.parseLong(username))
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + username));
+        // OAuth ID로 사용자를 찾습니다 (username에는 OAuth ID가 전달됨)
+        StudentEntity studentEntity = studentRepository.findByOauthId(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with oauth id: " + username));
 
         return new org.springframework.security.core.userdetails.User(
-                studentEntity.getId().toString(),
-                "", // No password as we use OAuth
+                studentEntity.getOauthId(),
+                "", // OAuth 인증이므로 비밀번호는 필요 없음
                 Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))
         );
     }

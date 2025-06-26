@@ -1,6 +1,5 @@
 package com.gate.houi.hoseoHoui.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,8 +11,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.gate.houi.hoseoHoui.service.AuthService;
-
 import java.util.Arrays;
 
 import lombok.RequiredArgsConstructor;
@@ -23,14 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Autowired
-    private final AuthService authService;
-    @Autowired
-    private final AuthenticationEntryPointHandler authenticationEntryPointHandler;
-    @Autowired
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    @Autowired
-    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -40,27 +30,19 @@ public class SecurityConfig {
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/", "/login/**", "/oauth2/**", "/oauth/**").permitAll()
+                .requestMatchers("/", "/login/**", "/oauth/**", "/oauth2/**").permitAll()
+                .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/notice").permitAll() // 공지사항 조회는 모든 사용자에게 허용
                 .requestMatchers("/reception/**").authenticated()
                 .requestMatchers("/history/**").authenticated()
                 .anyRequest().authenticated()
             )
-            .oauth2Login(oauth2 -> oauth2
-                .userInfoEndpoint(userInfo -> userInfo
-                    .userService(authService)
-                )
-                .successHandler(oAuth2AuthenticationSuccessHandler)
-            )
-            .exceptionHandling(exceptionHandling -> 
-                exceptionHandling.authenticationEntryPoint(authenticationEntryPointHandler)
-            )
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             .logout(logout -> logout
                 .logoutSuccessUrl("/")
                 .clearAuthentication(true)
                 .invalidateHttpSession(true)
-            )
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+            );
             
         return http.build();
     }

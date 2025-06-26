@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OAuthRefreshTokenRequest {
-    private String token;
+public class JwtTokenResponse {
+    private String accessToken;
+    private String refreshToken;
 }

@@ -12,11 +12,14 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudentEntity extends BaseTimeEntity {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "oauth_id", nullable = false, unique = true, columnDefinition = "TEXT")
+    private String oauthId;
+    
     @Column(nullable = false, length = 9)
     private String studentId;
 
@@ -29,9 +32,6 @@ public class StudentEntity extends BaseTimeEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Provider oauthProvider;
-
-    @Column(name = "oauth_id", nullable = false, unique = true)
-    private String oauthId;
 
     public enum Provider {
         google, kakao
