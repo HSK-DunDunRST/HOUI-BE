@@ -11,6 +11,9 @@ import com.gate.houi.backend.data.entityType.AccountEntity;
 import com.gate.houi.backend.data.entityType.ReceptionEntity;
 import com.gate.houi.backend.data.enumType.CampusType;
 import com.gate.houi.backend.data.enumType.ReceptionType;
+import com.gate.houi.backend.dto.reception.ReceptionHistoryResponseDTO;
+import com.gate.houi.backend.dto.reception.ReceptionRegisterRequestDTO;
+import com.gate.houi.backend.dto.reception.ReceptionRegisterResponseDTO;
 import com.gate.houi.backend.repository.AccountRepository;
 import com.gate.houi.backend.repository.ReceptionRepository;
 

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gate.houi.backend.data.entityType.NoticeEntity;
+import com.gate.houi.backend.dto.notice.NoticeRequestDTO;
+import com.gate.houi.backend.dto.notice.NoticeResponseDTO;
 import com.gate.houi.backend.repository.NoticeRepository;
 
 import lombok.RequiredArgsConstructor;
