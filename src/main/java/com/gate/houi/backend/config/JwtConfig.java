@@ -1,4 +1,4 @@
-package com.gate.houi.hoseoHoui.config;
+package com.gate.houi.backend.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;

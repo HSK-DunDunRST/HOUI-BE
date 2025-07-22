@@ -1,4 +1,4 @@
-package com.gate.houi.hoseoHoui.config;
+package com.gate.houi.backend.config;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;

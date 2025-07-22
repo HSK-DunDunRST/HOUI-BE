@@ -4,6 +4,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -121,35 +123,35 @@ public class GlobalExceptionHandler {
                 return ResponseEntity.status(ErrorType.NOT_FOUND_ENDPOINT.getErrorCode()).body(ErrorResponse.of(ErrorType.NOT_FOUND_ENDPOINT));
         }
 
-        // /**
-        //  * AccessDeniedException을 처리하는 핸들러
-        //  * 주로 권한이 없는 리소스에 접근하려고 할 때 발생합니다.
-        //  */
-        // @ExceptionHandler(AccessDeniedException.class)
-        // public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request) {
-        //         log.warn("Access denied at {}", request.getRequestURI());
-        //         return ResponseEntity.status(ErrorType.ACCESS_DENIED.getErrorCode()).body(ErrorResponse.of(ErrorType.ACCESS_DENIED));
-        // }
+        /**
+         * AccessDeniedException을 처리하는 핸들러
+         * 주로 권한이 없는 리소스에 접근하려고 할 때 발생합니다.
+         */
+        @ExceptionHandler(AccessDeniedException.class)
+        public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request) {
+                log.warn("Access denied at {}", request.getRequestURI());
+                return ResponseEntity.status(ErrorType.ACCESS_DENIED.getErrorCode()).body(ErrorResponse.of(ErrorType.ACCESS_DENIED));
+        }
 
-        // /**
-        //  * AuthenticationException을 처리하는 핸들러
-        //  * 주로 인증 실패 시 발생합니다.
-        //  */
-        // @ExceptionHandler(AuthenticationException.class)
-        // public ResponseEntity<ErrorResponse> handleSpringAuthenticationException(AuthenticationException e, HttpServletRequest request) {
-        //         log.warn("Authentication failed at {}", request.getRequestURI());
-        //         return ResponseEntity.status(ErrorType.UNAUTHORIZED_ACCESS.getErrorCode()).body(ErrorResponse.of(ErrorType.UNAUTHORIZED_ACCESS));
-        // }
+        /**
+         * AuthenticationException을 처리하는 핸들러
+         * 주로 인증 실패 시 발생합니다.
+         */
+        @ExceptionHandler(AuthenticationException.class)
+        public ResponseEntity<ErrorResponse> handleSpringAuthenticationException(AuthenticationException e, HttpServletRequest request) {
+                log.warn("Authentication failed at {}", request.getRequestURI());
+                return ResponseEntity.status(ErrorType.UNAUTHORIZED_ACCESS.getErrorCode()).body(ErrorResponse.of(ErrorType.UNAUTHORIZED_ACCESS));
+        }
 
-        // /**
-        //  * OAuth2AuthenticationException을 처리하는 핸들러
-        //  * 주로 OAuth2 인증 실패 시 발생합니다.
-        //  */
-        // @ExceptionHandler(OAuth2AuthenticationException.class)
-        // public ResponseEntity<ErrorResponse> handleOAuth2AuthenticationException(OAuth2AuthenticationException e, HttpServletRequest request) {
-        //         log.warn("OAuth2 authentication failed at {}", request.getRequestURI());
-        //         return ResponseEntity.status(ErrorType.AUTHENTICATION_FAILED.getErrorCode()).body(ErrorResponse.of(ErrorType.AUTHENTICATION_FAILED));
-        // }
+        /**
+         * OAuth2AuthenticationException을 처리하는 핸들러
+         * 주로 OAuth2 인증 실패 시 발생합니다.
+         */
+        @ExceptionHandler(OAuth2AuthenticationException.class)
+        public ResponseEntity<ErrorResponse> handleOAuth2AuthenticationException(OAuth2AuthenticationException e, HttpServletRequest request) {
+                log.warn("OAuth2 authentication failed at {}", request.getRequestURI());
+                return ResponseEntity.status(ErrorType.AUTHENTICATION_FAILED.getErrorCode()).body(ErrorResponse.of(ErrorType.AUTHENTICATION_FAILED));
+        }
 
         /**
          * Exception을 처리하는 핸들러

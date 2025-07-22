@@ -8,7 +8,6 @@ import com.gate.houi.backend.data.enumType.ErrorType;
 public class AuthenticationException extends BaseException {
     
     public AuthenticationException() {
-        super(ErrorType.UNAUTHORIZED_ACCESS.getErrorCode(),
-              ErrorType.UNAUTHORIZED_ACCESS.getErrorMessage());
+        super(ErrorType.UNAUTHORIZED_ACCESS.getErrorCode(), ErrorType.UNAUTHORIZED_ACCESS.getErrorMessage());
     }
 }
