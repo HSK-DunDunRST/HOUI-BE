@@ -1,0 +1,7 @@
+spring:
+    application:
+        name: backend
+        version: 1.0.0
+    profiles:
+        active: local
+        include: oauth
