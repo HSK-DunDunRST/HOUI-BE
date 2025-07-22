@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.gate.houi.backend.data.entityType.AccountEntity;
 import com.gate.houi.backend.dto.account.AccountProfileResponseDTO;
+import com.gate.houi.backend.exception.UserNotFoundException;
 import com.gate.houi.backend.repository.AccountRepository;
 
 import lombok.RequiredArgsConstructor;

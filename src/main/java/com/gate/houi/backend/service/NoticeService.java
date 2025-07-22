@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.gate.houi.backend.data.entityType.NoticeEntity;
 import com.gate.houi.backend.dto.notice.NoticeRequestDTO;
 import com.gate.houi.backend.dto.notice.NoticeResponseDTO;
+import com.gate.houi.backend.exception.NoticeNotDataException;
+import com.gate.houi.backend.exception.RequiredDataMissingException;
 import com.gate.houi.backend.repository.NoticeRepository;
 
 import lombok.RequiredArgsConstructor;

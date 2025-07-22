@@ -14,6 +14,7 @@ import com.gate.houi.backend.data.enumType.ReceptionType;
 import com.gate.houi.backend.dto.reception.ReceptionHistoryResponseDTO;
 import com.gate.houi.backend.dto.reception.ReceptionRegisterRequestDTO;
 import com.gate.houi.backend.dto.reception.ReceptionRegisterResponseDTO;
+import com.gate.houi.backend.exception.RequiredDataMissingException;
 import com.gate.houi.backend.repository.AccountRepository;
 import com.gate.houi.backend.repository.ReceptionRepository;
 
