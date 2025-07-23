@@ -25,7 +25,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/", "/oauth/**").permitAll()
-                //* API 테스트로 인한 임시 허용 */
+                // API 테스트 완료 후 주석 해제 필요 - 현재는 테스트용으로 허용
                 // .requestMatchers("/notice/**").permitAll()
                 .anyRequest().authenticated()
             )

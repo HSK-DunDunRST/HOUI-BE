@@ -27,7 +27,7 @@ public class MyInfoController {
      * 현재 로그인한 학생의 기본 프로필 조회
      * JWT 토큰을 통해 인증된 사용자의 기본 정보를 반환
      */
-    @GetMapping("/info")
+    @GetMapping
     public ResponseEntity<AccountProfileResponseDTO> getMyProfile(@AuthenticationPrincipal UserDetails userDetails) {
         // UserDetails의 username은 JWT 토큰에서 추출한 구글 사용자 ID (oauthId)
         String oauthId = userDetails.getUsername();
