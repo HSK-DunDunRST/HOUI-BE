@@ -28,8 +28,7 @@ public enum ErrorType {
     
     // Error code - 404
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "학생정보를 찾을 수 없어요."),
-    NOT_FOUND_NOTICE(HttpStatus.NOT_FOUND, "등록된 공지사항이 없어요."),
-    NOT_FOUND_DATA(HttpStatus.NOT_FOUND, "등록된 데이터를 찾을 수 없어요."),
+    NOT_FOUND_REQUEST_DATA(HttpStatus.NOT_FOUND, "요청한 데이터를 찾을 수 없어요."),
     NOT_FOUND_ENDPOINT(HttpStatus.NOT_FOUND, "요청한 리소스를 찾을 수 없어요."),
     
     // Error code - 500

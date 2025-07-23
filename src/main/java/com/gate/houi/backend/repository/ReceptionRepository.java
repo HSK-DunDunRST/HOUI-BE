@@ -19,7 +19,7 @@ public interface ReceptionRepository extends JpaRepository<ReceptionEntity, Long
     List<ReceptionEntity> findByStudentUuidOrderByCreatedAtDesc(UUID studentUuid);
     
     // 대기중인 접수들을 생성시간 순으로 조회
-    List<ReceptionEntity> findByReceptionTypeOrderByCreatedAtAsc(ReceptionType receptionStatus);
+    List<ReceptionEntity> findByReceptionTypeOrderByCreatedAtDesc(ReceptionType receptionStatus);
     
     // 대기중인 접수 개수 조회
     long countByReceptionType(ReceptionType receptionStatus);

@@ -22,7 +22,6 @@ public abstract class BaseTimeEntity {
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(updatable = true)
     private LocalDateTime updatedAt;
 
     @PrePersist

@@ -36,7 +36,7 @@ public class ReceptionService {
             throw new RequiredDataMissingException();
         }
         
-        // oauthId로 학생 정보 조회
+        // OAuth ID로 학생 정보 조회
         AccountEntity accountEntity = studentRepository.findByOauthId(oauthId)
                 .orElseThrow(() -> new RuntimeException("학생 정보를 찾을 수 없습니다."));
         
@@ -55,7 +55,7 @@ public class ReceptionService {
 
     // 사용자의 모든 접수 내역 조회
     public List<ReceptionHistoryResponseDTO> getReceptionHistory(String oauthId) {
-        // oauthId로 학생 정보 조회
+        // OAuth ID로 학생 정보 조회
         AccountEntity accountEntity = studentRepository.findByOauthId(oauthId)
                 .orElseThrow(() -> new RuntimeException("학생 정보를 찾을 수 없습니다."));
         

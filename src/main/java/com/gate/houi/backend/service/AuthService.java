@@ -86,6 +86,7 @@ public class AuthService {
     }
 
     private JwtTokenResponse generateTokenResponse(AccountEntity accountEntity) {
+        // 보안을 위해 OAuth ID를 JWT 토큰에 사용 (UUID 대신)
         String accessToken = jwtTokenProvider.generateAccessToken(accountEntity.getOauthId());
         String refreshToken = jwtTokenProvider.generateRefreshToken(accountEntity.getOauthId());
 

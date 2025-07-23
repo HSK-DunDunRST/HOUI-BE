@@ -65,7 +65,7 @@ public class RefreshTokenService {
         AccountEntity accountEntity = accountRepository.findByAccountUuid(refreshTokenEntity.getAccountUuid())
                 .orElseThrow(() -> new UserNotFoundException());
         
-        // 새로운 액세스 토큰과 리프레시 토큰 생성
+        // 보안을 위해 OAuth ID를 JWT 토큰에 사용
         String newAccessToken = jwtTokenProvider.generateAccessToken(accountEntity.getOauthId());
         String newRefreshToken = jwtTokenProvider.generateRefreshToken(accountEntity.getOauthId());
 

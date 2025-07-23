@@ -21,7 +21,6 @@ public class AccountProfileResponseDTO {
     private UUID accountUuid;
     private String studentId;;
     private String accountName;
-    private String accountEmail;
     private AccountEntity.Provider oauthProvider;
     private LocalDateTime createdAt;
 }

@@ -31,7 +31,7 @@ public class ReceptionController {
     @PostMapping("/register")
     public ResponseEntity<ReceptionRegisterResponseDTO> addReception(@RequestBody ReceptionRegisterRequestDTO receptionRequestDTO,
                                                             @AuthenticationPrincipal UserDetails userDetails) {
-        // UserDetails에서 oauthId를 추출 (JWT 토큰에서 추출한 사용자 식별자)
+        // UserDetails에서 OAuth ID를 추출 (JWT 토큰에서 추출한 사용자 식별자)
         String oauthId = userDetails.getUsername();
         
         return ResponseEntity.ok(receptionService.RegisterReception(receptionRequestDTO, oauthId));
@@ -40,7 +40,7 @@ public class ReceptionController {
     // 사용자의 진료접수 내역 조회
     @GetMapping("/history")
     public ResponseEntity<List<ReceptionHistoryResponseDTO>> getReceptionHistory(@AuthenticationPrincipal UserDetails userDetails) {
-        // UserDetails에서 oauthId를 추출 (JWT 토큰에서 추출한 사용자 식별자)
+        // UserDetails에서 OAuth ID를 추출 (JWT 토큰에서 추출한 사용자 식별자)
         String oauthId = userDetails.getUsername();
         
         return ResponseEntity.ok(receptionService.getReceptionHistory(oauthId));
