@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.gate.houi.backend.data.entityType.AccountEntity;
 import com.gate.houi.backend.data.entityType.RefreshTokenEntity;
-import com.gate.houi.backend.dto.auth.GoogleTokenRequest;
-import com.gate.houi.backend.dto.auth.JwtTokenResponse;
+import com.gate.houi.backend.dto.auth.GoogleTokenRequestDTO;
+import com.gate.houi.backend.dto.auth.JwtTokenResponseDTO;
 import com.gate.houi.backend.repository.AccountRepository;
 import com.gate.houi.backend.security.JwtTokenProvider;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
@@ -29,7 +29,7 @@ public class AuthService {
     private final RefreshTokenService refreshTokenService;
 
     @Transactional
-    public JwtTokenResponse loginWithGoogle(GoogleTokenRequest googleTokenRequest) {
+    public JwtTokenResponseDTO loginWithGoogle(GoogleTokenRequestDTO googleTokenRequest) {
         //* 구글 토큰 확인 디버그용 출력 */
         System.out.println("구글 ID 토큰: " + googleTokenRequest.getToken());
         try { GoogleIdToken googleIdToken = googleIdTokenVerifier.verify(googleTokenRequest.getToken());
@@ -85,7 +85,7 @@ public class AuthService {
         }
     }
 
-    private JwtTokenResponse generateTokenResponse(AccountEntity accountEntity) {
+    private JwtTokenResponseDTO generateTokenResponse(AccountEntity accountEntity) {
         // 보안을 위해 OAuth ID를 JWT 토큰에 사용 (UUID 대신)
         String accessToken = jwtTokenProvider.generateAccessToken(accountEntity.getOauthId());
         String refreshToken = jwtTokenProvider.generateRefreshToken(accountEntity.getOauthId());
@@ -93,7 +93,7 @@ public class AuthService {
         // RefreshToken을 데이터베이스에 저장
         refreshTokenService.saveRefreshToken(accountEntity, refreshToken);
 
-        return JwtTokenResponse.builder()
+        return JwtTokenResponseDTO.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();

@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GoogleTokenRequest {
+public class GoogleTokenRequestDTO {
     private String token; // Google ID token or refresh token
 }

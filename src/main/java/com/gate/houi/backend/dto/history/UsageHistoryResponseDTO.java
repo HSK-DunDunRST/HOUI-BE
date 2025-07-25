@@ -1,4 +1,4 @@
-package com.gate.houi.backend.dto.reception;
+package com.gate.houi.backend.dto.history;
 
 import java.time.LocalDateTime;
 
@@ -10,7 +10,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class ReceptionHistoryResponseDTO {
+public class UsageHistoryResponseDTO {
     private Long id;
     private String symptomsContent;
     private CampusType campusType;

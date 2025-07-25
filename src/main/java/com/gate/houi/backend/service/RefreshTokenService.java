@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.gate.houi.backend.data.entityType.AccountEntity;
 import com.gate.houi.backend.data.entityType.RefreshTokenEntity;
-import com.gate.houi.backend.dto.auth.JwtTokenResponse;
+import com.gate.houi.backend.dto.auth.JwtTokenResponseDTO;
 import com.gate.houi.backend.exception.AuthenticationException;
 import com.gate.houi.backend.exception.TokenExpiredException;
 import com.gate.houi.backend.exception.UserNotFoundException;
@@ -49,7 +49,7 @@ public class RefreshTokenService {
     }
 
     @Transactional
-    public JwtTokenResponse refreshAccessToken(String refreshToken) {
+    public JwtTokenResponseDTO refreshAccessToken(String refreshToken) {
         // 리프레시 토큰으로 DB에서 조회
         RefreshTokenEntity refreshTokenEntity = refreshTokenRepository.findByRefreshToken(refreshToken)
                 .orElseThrow(() -> new TokenExpiredException());
@@ -73,7 +73,7 @@ public class RefreshTokenService {
         refreshTokenEntity.update(newRefreshToken);
         refreshTokenRepository.save(refreshTokenEntity);
 
-        return JwtTokenResponse.builder()
+        return JwtTokenResponseDTO.builder()
                 .accessToken(newAccessToken)
                 .refreshToken(newRefreshToken)
                 .build();

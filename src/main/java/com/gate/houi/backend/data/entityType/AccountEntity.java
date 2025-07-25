@@ -6,6 +6,7 @@ import lombok.*;
 import java.util.UUID;
 
 import com.gate.houi.backend.data.common.BaseTimeEntity;
+import com.gate.houi.backend.data.enumType.UserRole;
 
 @Entity
 @Table(name = "account_data")
@@ -39,10 +40,18 @@ public class AccountEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Provider oauthProvider;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private UserRole role = UserRole.USER;
+
     @PrePersist
     protected void onCreate() {
         if (this.accountUuid == null) {
             this.accountUuid = UUID.randomUUID();
+        }
+        if (this.role == null) {
+            this.role = UserRole.USER;
         }
     }
 

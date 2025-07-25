@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -68,8 +69,9 @@ public class NoticeController {
     }
 
     //! 여기 밑은 관리자 전용 컨트롤러로 분리 예정
-    // 공지사항 등록
+    // 공지사항 등록 - 관리자 전용
     @PostMapping("/add")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<NoticeResponseDTO> addNotice(@AuthenticationPrincipal UserDetails userDetails, @RequestBody NoticeRequestDTO noticeRequestDTO) {
         // 인증 확인 - 보안 강화
         if (userDetails == null) {
@@ -79,8 +81,9 @@ public class NoticeController {
         // System.out.println("현재 인증된 사용자: " + userDetails.getUsername());
         return ResponseEntity.ok(noticeService.createNotice(noticeRequestDTO));
     }
-    // 공지사항 수정
+    // 공지사항 수정 - 관리자 전용
     @PatchMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<NoticeResponseDTO> updateNotice(@AuthenticationPrincipal UserDetails userDetails,@PathVariable Long id, @RequestBody NoticeRequestDTO noticeRequestDTO) {
         // 인증 확인 - 보안 강화
         if (userDetails == null) {
@@ -89,8 +92,9 @@ public class NoticeController {
         
         return ResponseEntity.ok(noticeService.updateNotice(id, noticeRequestDTO));
     }
-    // 공지사항 삭제
+    // 공지사항 삭제 - 관리자 전용
     @DeleteMapping("/del/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteNotice(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long id) {
         // 인증 확인 - 보안 강화
         if (userDetails == null) {

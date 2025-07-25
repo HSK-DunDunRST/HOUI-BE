@@ -24,11 +24,14 @@ public class CustomUserDetailsService implements UserDetailsService {
         AccountEntity accountEntity = accountRepository.findByOauthId(username)
                 .orElseThrow(() -> new UsernameNotFoundException("OAuth ID로 사용자 조회 실패: " + username));
 
+        // 사용자 권한 설정 (ROLE_ 접두사 추가)
+        String role = "ROLE_" + accountEntity.getRole().name();
+        
         // 일관성을 위해 OAuth ID를 그대로 사용 (보안상 더 안전)
         return new org.springframework.security.core.userdetails.User(
                 accountEntity.getOauthId(), // OAuth ID 사용 (JWT 토큰과 일치)
                 "", // OAuth 인증이므로 비밀번호는 필요 없음
-                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))
+                Collections.singletonList(new SimpleGrantedAuthority(role))
         );
     }
 }

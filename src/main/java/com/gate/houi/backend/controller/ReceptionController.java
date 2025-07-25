@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gate.houi.backend.dto.reception.ReceptionHistoryResponseDTO;
+import com.gate.houi.backend.dto.history.UsageHistoryResponseDTO;
 import com.gate.houi.backend.dto.reception.ReceptionRegisterRequestDTO;
 import com.gate.houi.backend.dto.reception.ReceptionRegisterResponseDTO;
 import com.gate.houi.backend.service.ReceptionService;
@@ -39,10 +39,10 @@ public class ReceptionController {
 
     // 사용자의 진료접수 내역 조회
     @GetMapping("/history")
-    public ResponseEntity<List<ReceptionHistoryResponseDTO>> getReceptionHistory(@AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<List<UsageHistoryResponseDTO>> getReceptionHistory(@AuthenticationPrincipal UserDetails userDetails) {
         // UserDetails에서 OAuth ID를 추출 (JWT 토큰에서 추출한 사용자 식별자)
         String oauthId = userDetails.getUsername();
         
-        return ResponseEntity.ok(receptionService.getReceptionHistory(oauthId));
+        return ResponseEntity.ok(receptionService.getSuccessfulReceptions(oauthId));
     }
 }

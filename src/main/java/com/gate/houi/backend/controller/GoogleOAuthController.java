@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gate.houi.backend.data.enumType.ErrorType;
-import com.gate.houi.backend.dto.auth.GoogleTokenRequest;
-import com.gate.houi.backend.dto.auth.JwtTokenResponse;
-import com.gate.houi.backend.dto.auth.RefreshTokenRequest;
+import com.gate.houi.backend.dto.auth.GoogleTokenRequestDTO;
+import com.gate.houi.backend.dto.auth.JwtTokenResponseDTO;
+import com.gate.houi.backend.dto.auth.RefreshTokenRequestDTO;
 import com.gate.houi.backend.service.AuthService;
 import com.gate.houi.backend.service.RefreshTokenService;
 
@@ -32,7 +32,7 @@ public class GoogleOAuthController {
     private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/login")
-    public ResponseEntity<JwtTokenResponse> googleLogin(@RequestBody GoogleTokenRequest googleTokenRequest) {
+    public ResponseEntity<JwtTokenResponseDTO> googleLogin(@RequestBody GoogleTokenRequestDTO googleTokenRequest) {
         // 프론트엔드에서 받은 ID 토큰을 검증하고, 학생 정보를 찾거나 저장한 후 JWT 토큰과 학생 정보를 반환
         return ResponseEntity.ok(authService.loginWithGoogle(googleTokenRequest));
     }
@@ -42,9 +42,9 @@ public class GoogleOAuthController {
      * 액세스 토큰이 만료되었을 때 사용
      */
     @PostMapping("/refresh")
-    public ResponseEntity<JwtTokenResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
-        JwtTokenResponse tokenResponse = refreshTokenService.refreshAccessToken(refreshTokenRequest.getRefreshToken());
-        return ResponseEntity.ok(tokenResponse);
+    public ResponseEntity<JwtTokenResponseDTO> refreshToken(@RequestBody RefreshTokenRequestDTO refreshTokenRequest) {
+        // 리프레시 토큰을 검증하고 새로운 액세스 토큰을 발급
+        return ResponseEntity.ok(refreshTokenService.refreshAccessToken(refreshTokenRequest.getRefreshToken()));
     }
 
     /**
@@ -53,7 +53,7 @@ public class GoogleOAuthController {
      * Spring Security의 기본 로그아웃 대신 JWT 특성에 맞는 커스텀 로그아웃 사용
      */
     @PostMapping("/logout")
-    public ResponseEntity<Map<String, String>> logout(@RequestBody RefreshTokenRequest refreshTokenRequest) {
+    public ResponseEntity<Map<String, String>> logout(@RequestBody RefreshTokenRequestDTO refreshTokenRequest) {
         try {
             authService.logout(refreshTokenRequest.getRefreshToken());
             
@@ -64,7 +64,7 @@ public class GoogleOAuthController {
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", ErrorType.LOGOUT_FAILED.getErrorMessage());
+            errorResponse.put("error", ErrorType.INTERNAL_SERVER_ERROR.getErrorMessage());
             errorResponse.put("timestamp", Instant.now().toString());
             
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
