@@ -18,7 +18,6 @@ public enum ErrorType {
     UNAUTHORIZED_ACCESS(HttpStatus.UNAUTHORIZED, "인증되지 않은 접근이에요. 로그인이 필요해요."),
     AUTHENTICATION_FAILED(HttpStatus.UNAUTHORIZED, "인증 처리 중 오류가 발생했어요."),
     TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "토큰이 만료되었어요."),
-    LOGOUT_FAILED(HttpStatus.UNAUTHORIZED, "로그아웃 처리 중 오류가 발생했어요."),
     
     // Error code - 200 (No data available)
     NO_NOTICE_AVAILABLE(HttpStatus.OK, "등록된 공지사항이 없어요."),
@@ -28,8 +27,7 @@ public enum ErrorType {
     
     // Error code - 404
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "학생정보를 찾을 수 없어요."),
-    NOT_FOUND_NOTICE(HttpStatus.NOT_FOUND, "등록된 공지사항이 없어요."),
-    NOT_FOUND_DATA(HttpStatus.NOT_FOUND, "등록된 데이터를 찾을 수 없어요."),
+    NOT_FOUND_REQUEST_DATA(HttpStatus.NOT_FOUND, "요청한 데이터를 찾을 수 없어요."),
     NOT_FOUND_ENDPOINT(HttpStatus.NOT_FOUND, "요청한 리소스를 찾을 수 없어요."),
     
     // Error code - 500

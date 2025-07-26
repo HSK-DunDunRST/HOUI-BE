@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.gate.houi.backend.data.entityType.NoticeEntity;
 import com.gate.houi.backend.dto.notice.NoticeRequestDTO;
 import com.gate.houi.backend.dto.notice.NoticeResponseDTO;
-import com.gate.houi.backend.exception.NoticeNotDataException;
+import com.gate.houi.backend.exception.RequestDataNotFoundException;
 import com.gate.houi.backend.exception.RequiredDataMissingException;
 import com.gate.houi.backend.repository.NoticeRepository;
 
@@ -62,7 +62,7 @@ public class NoticeService {
     public NoticeResponseDTO updateNotice(Long id, NoticeRequestDTO noticeRequestDTO) {
         // 해당 id의 공지사항을 조회하고 없으면 예외 발생
         NoticeEntity notice = noticeRepository.findById(id)
-                .orElseThrow(() -> new NoticeNotDataException());
+                .orElseThrow(() -> new RequestDataNotFoundException());
         
         // 필수 데이터(공지 제목)가 전달되지 않았으면 예외 발생
         if (noticeRequestDTO.getNoticeTitle() == null || noticeRequestDTO.getNoticeTitle().isEmpty()) {
@@ -82,7 +82,7 @@ public class NoticeService {
     public NoticeResponseDTO deleteNotice(Long id) {
         // 해당 id의 공지사항을 조회하고 없으면 예외 발생
         NoticeEntity notice = noticeRepository.findById(id)
-                .orElseThrow(() -> new NoticeNotDataException());
+                .orElseThrow(() -> new RequestDataNotFoundException());
 
         // 공지사항 삭제
         noticeRepository.delete(notice);
