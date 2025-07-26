@@ -39,7 +39,7 @@ public class ReceptionService {
         }
         
         // OAuth ID로 학생 정보 조회 (존재 여부 확인용)
-        studentRepository.findByOauthId(oauthId)
+        AccountEntity accountEntity = studentRepository.findByOauthId(oauthId)
                 .orElseThrow(() -> new RuntimeException("학생 정보를 찾을 수 없습니다."));
         
         // DTO로부터 ReceptionEntity 생성
@@ -47,7 +47,7 @@ public class ReceptionService {
                 .symptomsContent(receptionRequestDTO.getSymptomsContent())
                 .campusType(CampusType.ASAN) // 아산캠퍼스로 고정
                 .receptionType(ReceptionType.WAITING) // 기본 상태는 대기
-                .oauthId(oauthId) // oauthId 직접 사용
+                .accountUuid(accountEntity.getAccountUuid()) // accountUuid 사용
                 .build();
         
         // 엔티티 저장 후 결과 DTO로 변환하여 반환
@@ -58,8 +58,12 @@ public class ReceptionService {
     // SUCCESSFUL 상태의 접수만 조회 후 DTO 리스트로 반환 (처방완료 이용내역만 조회)
     @Transactional(readOnly = true)
     public List<UsageHistoryResponseDTO> getSuccessfulReceptions(String oauthId) {
-        // 해당 사용자의 처방 완료된 접수 내역 조회 (oauthId 직접 사용)
-        List<ReceptionEntity> receptions = receptionRepository.findByOauthIdAndReceptionTypeOrderByCreatedAt(oauthId, ReceptionType.SUCCESSFUL);
+        // OAuth ID로 accountUuid 조회
+        AccountEntity accountEntity = studentRepository.findByOauthId(oauthId)
+                .orElseThrow(() -> new RuntimeException("학생 정보를 찾을 수 없습니다."));
+        
+        // 해당 사용자의 처방 완료된 접수 내역 조회 (accountUuid 사용)
+        List<ReceptionEntity> receptions = receptionRepository.findByAccountUuidAndReceptionTypeOrderByCreatedAt(accountEntity.getAccountUuid(), ReceptionType.SUCCESSFUL);
 
         return receptions.stream()
                 .map(this::convertToDtoForHistory)
@@ -69,8 +73,8 @@ public class ReceptionService {
 
     // 모든 접수 내역 조회 시 사용하는 상세 DTO 변환 메서드
     private AllUsageHistoryResponseDTO convertToDto(ReceptionEntity receptionEntity) {
-        // oauthId로 학생 정보 조회
-        AccountEntity accountEntity = studentRepository.findByOauthId(receptionEntity.getOauthId())
+        // accountUuid로 학생 정보 조회
+        AccountEntity accountEntity = studentRepository.findByAccountUuid(receptionEntity.getAccountUuid())
                 .orElseThrow(() -> new NoticeDataNotFoundException());
         
         return AllUsageHistoryResponseDTO.builder()

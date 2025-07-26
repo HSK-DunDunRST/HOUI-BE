@@ -18,6 +18,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 import com.gate.houi.backend.data.common.BaseTimeEntity;
 import com.gate.houi.backend.data.enumType.CampusType;
 import com.gate.houi.backend.data.enumType.ReceptionType;
@@ -34,12 +36,10 @@ public class ReceptionEntity extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(name = "oauth_id", nullable = false)
-    private String oauthId;
+    // AccountEntity의 UUID v4를 참조
+    @Column(name = "account_uuid", nullable = false)
+    private UUID accountUuid;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "oauth_id", referencedColumnName = "oauth_id", insertable = false, updatable = false)
-    private AccountEntity account;
     
     @Column(name = "symptoms_content", nullable = false)
     private String symptomsContent;
@@ -50,9 +50,12 @@ public class ReceptionEntity extends BaseTimeEntity {
     
     @Column(name = "prescription_content")
     private String prescriptionContent;
-
+    
     @Enumerated(EnumType.STRING)
     @Column(name = "reception_type", nullable = false)
     private ReceptionType receptionType;
-
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_uuid", referencedColumnName = "account_uuid", insertable = false, updatable = false)
+    private AccountEntity account;
 }

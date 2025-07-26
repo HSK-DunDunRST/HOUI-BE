@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.util.UUID;
 
+import org.hibernate.annotations.UuidGenerator;
+
 import com.gate.houi.backend.data.common.BaseTimeEntity;
 import com.gate.houi.backend.data.enumType.UserRole;
 
@@ -21,7 +23,9 @@ public class AccountEntity extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "account_uuid", nullable = false, unique = true, updatable = false)
+    // UUID v4 (랜덤 UUID) 사용 - Hibernate 최신 방식
+    @UuidGenerator
+    @Column(name = "account_uuid", nullable = false, unique = true, updatable = false, columnDefinition = "BINARY(16)")
     private UUID accountUuid;
 
     @Column(name = "oauth_id", nullable = false, unique = true, columnDefinition = "TEXT")
@@ -47,9 +51,7 @@ public class AccountEntity extends BaseTimeEntity {
 
     @PrePersist
     protected void onCreate() {
-        if (this.accountUuid == null) {
-            this.accountUuid = UUID.randomUUID();
-        }
+        // 엔티티 저장 전 기본값 설정
         if (this.role == null) {
             this.role = UserRole.USER;
         }
