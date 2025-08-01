@@ -12,11 +12,11 @@ import com.gate.houi.backend.data.entityType.RefreshTokenEntity;
 public interface RefreshTokenRepository extends JpaRepository<RefreshTokenEntity, Long> {
     
     // 학생 UUID로 리프레시 토큰 찾기
-    Optional<RefreshTokenEntity> findByAccountUuid(UUID accountUuid);
-    
-    // 리프레시 토큰 문자열로 찾기
+    Optional<RefreshTokenEntity> findByStudentUuid(UUID studentUuid);
+
+    // 리프레시 토큰으로 조회
     Optional<RefreshTokenEntity> findByRefreshToken(String refreshToken);
     
     // 학생 UUID로 리프레시 토큰 삭제
-    void deleteByAccountUuid(UUID accoutnUuid);
+    void deleteByStudentUuid(UUID studentUuid);
 }

@@ -11,13 +11,17 @@ import com.gate.houi.backend.data.common.BaseTimeEntity;
 import com.gate.houi.backend.data.enumType.UserRole;
 
 @Entity
-@Table(name = "account_data")
+@Table(name = "student_data", indexes = {
+    @Index(name = "idx_student_uuid", columnList = "student_uuid"),
+    @Index(name = "idx_oauth_id", columnList = "oauth_id"),
+    @Index(name = "idx_student_id", columnList = "student_id")
+})
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountEntity extends BaseTimeEntity {
+public class StudentEntity extends BaseTimeEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,20 +29,17 @@ public class AccountEntity extends BaseTimeEntity {
 
     // UUID v4 (랜덤 UUID) 사용 - Hibernate 최신 방식
     @UuidGenerator
-    @Column(name = "account_uuid", nullable = false, unique = true, updatable = false, columnDefinition = "BINARY(16)")
-    private UUID accountUuid;
+    @Column(name = "student_uuid", nullable = false, unique = true, updatable = false, columnDefinition = "BINARY(16)")
+    private UUID studentUuid;
 
-    @Column(name = "oauth_id", nullable = false, unique = true, columnDefinition = "TEXT")
+    @Column(name = "oauth_id", nullable = false, unique = true, length = 500)
     private String oauthId;
     
     @Column(name = "student_id", nullable = false, length = 9)
     private String studentId;
 
-    @Column(name = "account_name" ,nullable = false, length = 50)
-    private String accountName;
-
-    @Column(name = "account_email" ,nullable = false, length = 100)
-    private String accountEmail;
+    @Column(name = "student_name" ,nullable = false, length = 50)
+    private String studentName;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -58,6 +59,6 @@ public class AccountEntity extends BaseTimeEntity {
     }
 
     public enum Provider {
-        google, kakao
+        google
     }
 }

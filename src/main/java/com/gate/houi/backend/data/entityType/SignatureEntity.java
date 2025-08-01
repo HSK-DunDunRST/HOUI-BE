@@ -2,8 +2,6 @@ package com.gate.houi.backend.data.entityType;
 
 import java.util.UUID;
 
-import com.gate.houi.backend.data.common.BaseTimeEntity;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,26 +12,27 @@ import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
-@Getter
 @Entity
-@Table(name = "refresh_token_data", indexes = {
-    @Index(name = "idx_refresh_token_student_uuid", columnList = "student_uuid")
+@Table(name = "signature_data", indexes = {
+    @Index(name = "idx_signature_student_uuid", columnList = "student_uuid")
 })
-public class RefreshTokenEntity extends BaseTimeEntity {
-    
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class SignatureEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
     @Column(name = "student_uuid", nullable = false)
     private UUID studentUuid;
 
@@ -41,11 +40,7 @@ public class RefreshTokenEntity extends BaseTimeEntity {
     @JoinColumn(name = "student_uuid", referencedColumnName = "student_uuid", insertable = false, updatable = false)
     private StudentEntity studentEntity;
 
-    @Column(name = "refresh_token", nullable = false, columnDefinition = "TEXT")
-    private String refreshToken;
-
-    public RefreshTokenEntity update(String newRefreshToken) {
-        this.refreshToken = newRefreshToken;
-        return this;
-    }
+    // 업로드된 서명 이미지 경로(혹은 URL)
+    @Column(name = "signature_url", length = 500, nullable = false)
+    private String signatureUrl;
 }

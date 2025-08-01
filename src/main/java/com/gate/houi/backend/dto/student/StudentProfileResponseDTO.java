@@ -1,9 +1,9 @@
-package com.gate.houi.backend.dto.account;
+package com.gate.houi.backend.dto.student;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import com.gate.houi.backend.data.entityType.AccountEntity;
+import com.gate.houi.backend.data.entityType.StudentEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,11 +16,11 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountProfileResponseDTO {
+public class StudentProfileResponseDTO {
     
-    private UUID accountUuid;
-    private String studentId;;
-    private String accountName;
-    private AccountEntity.Provider oauthProvider;
+    private UUID studentUuid;
+    private String studentId;
+    private String studentName;
+    private StudentEntity.Provider oauthProvider;
     private LocalDateTime createdAt;
 }

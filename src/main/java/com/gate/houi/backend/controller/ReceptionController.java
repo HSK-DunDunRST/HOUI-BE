@@ -1,6 +1,7 @@
 package com.gate.houi.backend.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import com.gate.houi.backend.dto.history.UsageHistoryResponseDTO;
 import com.gate.houi.backend.dto.reception.ReceptionRegisterRequestDTO;
 import com.gate.houi.backend.dto.reception.ReceptionRegisterResponseDTO;
 import com.gate.houi.backend.service.ReceptionService;
+import com.gate.houi.backend.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,23 +28,27 @@ public class ReceptionController {
 
     @Autowired
     private final ReceptionService receptionService;
+    
+    @Autowired
+    private final UserService userService;
 
     // 새로운 진료접수 등록
     @PostMapping("/register")
     public ResponseEntity<ReceptionRegisterResponseDTO> addReception(@RequestBody ReceptionRegisterRequestDTO receptionRequestDTO,
                                                             @AuthenticationPrincipal UserDetails userDetails) {
-        // UserDetails에서 OAuth ID를 추출 (JWT 토큰에서 추출한 사용자 식별자)
+        // OAuth ID로 UUID 조회 (보안상 분리)
         String oauthId = userDetails.getUsername();
-        
-        return ResponseEntity.ok(receptionService.RegisterReception(receptionRequestDTO, oauthId));
+        UUID studentUuid = userService.getStudentUuidByOauthId(oauthId);
+        return ResponseEntity.ok(receptionService.RegisterReception(receptionRequestDTO, studentUuid));
     }
 
     // 사용자의 진료접수 내역 조회
     @GetMapping("/history")
     public ResponseEntity<List<UsageHistoryResponseDTO>> getReceptionHistory(@AuthenticationPrincipal UserDetails userDetails) {
-        // UserDetails에서 OAuth ID를 추출 (JWT 토큰에서 추출한 사용자 식별자)
+        // OAuth ID로 UUID 조회 (보안상 분리)
         String oauthId = userDetails.getUsername();
+        java.util.UUID studentUuid = userService.getStudentUuidByOauthId(oauthId);
         
-        return ResponseEntity.ok(receptionService.getSuccessfulReceptions(oauthId));
+        return ResponseEntity.ok(receptionService.getSuccessfulReceptions(studentUuid));
     }
 }

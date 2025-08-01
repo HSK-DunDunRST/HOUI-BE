@@ -8,6 +8,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -25,7 +26,12 @@ import com.gate.houi.backend.data.enumType.CampusType;
 import com.gate.houi.backend.data.enumType.ReceptionType;
 
 @Entity
-@Table(name = "reception_data")
+@Table(name = "reception_data", indexes = {
+    @Index(name = "idx_reception_student_uuid", columnList = "student_uuid"),
+    @Index(name = "idx_reception_campus_type", columnList = "campus_type"),
+    @Index(name = "idx_reception_type", columnList = "reception_type"),
+    @Index(name = "idx_reception_created_at", columnList = "createdAt")
+})
 @Data
 @Builder
 @AllArgsConstructor
@@ -35,12 +41,11 @@ public class ReceptionEntity extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    // AccountEntity의 UUID v4를 참조
-    @Column(name = "account_uuid", nullable = false)
-    private UUID accountUuid;
-    
-    
+
+    // StudentEntity의 UUID v4를 참조
+    @Column(name = "student_uuid", nullable = false)
+    private UUID studentUuid;
+
     @Column(name = "symptoms_content", nullable = false)
     private String symptomsContent;
     
@@ -56,6 +61,6 @@ public class ReceptionEntity extends BaseTimeEntity {
     private ReceptionType receptionType;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_uuid", referencedColumnName = "account_uuid", insertable = false, updatable = false)
-    private AccountEntity account;
+    @JoinColumn(name = "student_uuid", referencedColumnName = "student_uuid", insertable = false, updatable = false)
+    private StudentEntity studentEntity;
 }

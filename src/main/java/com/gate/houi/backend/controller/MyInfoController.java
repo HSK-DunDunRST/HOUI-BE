@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gate.houi.backend.dto.account.AccountProfileResponseDTO;
-import com.gate.houi.backend.service.AccountService;
+import com.gate.houi.backend.dto.student.StudentProfileResponseDTO;
+import com.gate.houi.backend.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,32 +21,18 @@ import lombok.RequiredArgsConstructor;
 public class MyInfoController {
 
     @Autowired
-    private final AccountService accountService;
+    private final UserService userService;
 
     /**
      * 현재 로그인한 학생의 기본 프로필 조회
      * JWT 토큰을 통해 인증된 사용자의 기본 정보를 반환
      */
     @GetMapping("/info")
-    public ResponseEntity<AccountProfileResponseDTO> getMyProfile(@AuthenticationPrincipal UserDetails userDetails) {
-        // UserDetails의 username은 JWT 토큰에서 추출한 구글 사용자 ID (oauthId)
+    public ResponseEntity<StudentProfileResponseDTO> getMyProfile(@AuthenticationPrincipal UserDetails userDetails) {
+        // UserDetails의 username은 JWT 토큰에서 추출한 OAuth ID
         String oauthId = userDetails.getUsername();
-        //* Debug 전용 출력문 (UserDetails에서 넘어오는 구글 사용자 ID 확인) */
-        System.out.println("Google User ID from UserDetails: " + oauthId);
-        AccountProfileResponseDTO studentProfile = accountService.getAccountProfile(oauthId);
-        
-        return ResponseEntity.ok(studentProfile);
-    }
+        StudentProfileResponseDTO studentProfile = userService.getAccountProfile(oauthId);
 
-    /**
-     * 현재 로그인한 학생의 상세 프로필 조회 (통계 정보 포함)
-     * 기본 정보 + 진료 접수 횟수, 이용 내역 수 등의 통계 정보를 포함
-     */
-    @GetMapping("/edit")
-    public ResponseEntity<AccountProfileResponseDTO> getMyDetailedProfile(@AuthenticationPrincipal UserDetails userDetails) {
-        String oauthId = userDetails.getUsername();
-        AccountProfileResponseDTO detailedProfile = accountService.getDetailedAccountProfile(oauthId);
-        
-        return ResponseEntity.ok(detailedProfile);
+        return ResponseEntity.ok(studentProfile);
     }
 }
