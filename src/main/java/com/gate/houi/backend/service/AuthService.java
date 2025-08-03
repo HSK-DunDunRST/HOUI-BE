@@ -1,6 +1,7 @@
 package com.gate.houi.backend.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -10,15 +11,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gate.houi.backend.data.entityType.StudentEntity;
+import com.gate.houi.backend.data.enumType.ErrorType;
 import com.gate.houi.backend.data.entityType.RefreshTokenEntity;
 import com.gate.houi.backend.dto.auth.GoogleTokenRequestDTO;
 import com.gate.houi.backend.dto.auth.JwtTokenResponseDTO;
+import com.gate.houi.backend.exception.BaseException;
 import com.gate.houi.backend.repository.StudentRepository;
 import com.gate.houi.backend.security.JwtTokenProvider;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -30,14 +34,15 @@ public class AuthService {
 
     @Transactional
     public JwtTokenResponseDTO loginWithGoogle(GoogleTokenRequestDTO googleTokenRequest) {
-        //* 구글 토큰 확인 디버그용 출력 */
-        System.out.println("구글 ID 토큰: " + googleTokenRequest.getToken());
-        try { GoogleIdToken googleIdToken = googleIdTokenVerifier.verify(googleTokenRequest.getToken());
+        try {
+            GoogleIdToken googleIdToken = googleIdTokenVerifier.verify(googleTokenRequest.getToken());
             if (googleIdToken == null) {
-                throw new RuntimeException("구글 인증 실패: 유효하지 않은 토큰");
+                //* Google Authentication Token Log */
+                log.warn("Google Token is null or invalid");
+                throw new BaseException(ErrorType.AUTHENTICATION_FAILED.getErrorCode(), ErrorType.AUTHENTICATION_FAILED.getErrorMessage());
             }
-            //* 구글 인증 성공시 디버그용 출력 */
-            System.out.println("구글 인증 성공");
+            //* Google Authentication Log */
+            log.info("Google Authentication Successful");
 
             // 구글 ID 토큰에서 사용자 정보 추출
             Payload payload = googleIdToken.getPayload();
@@ -48,11 +53,8 @@ public class AuthService {
             // 이메일에서 학번 추출 (예: 20201234@hoseo.edu)
             String studentId = userEmail.split("@")[0];
 
-            //* 구글 인증 성공 후 학생 정보 GET */
-            System.out.println("구글 사용자 ID: " + googleUserId);
-            System.out.println("학생 ID: " + studentId);
-            System.out.println("학생 이름: " + userName);
-            System.out.println("학생 이메일: " + userEmail);
+            //* Google Authentication User Info Log */
+            log.info("Google User Info: {}, Name: {}, Email: {}", googleUserId, studentId, userName);
 
             // 학생 정보를 데이터베이스에서 찾거나 새로 생성
             Optional<StudentEntity> existingStudent = studentRepository.findByOauthId(payload.getSubject());
@@ -62,9 +64,9 @@ public class AuthService {
                 account.getUpdatedAt(); // 업데이트 시간 갱신
                 studentRepository.save(account);
 
-                //* 구글 인증 성공 후 DB와 비교 테스트 출력 */
-                System.out.println("기존 학생 정보 사용 및 oauthId 업데이트: " + account.getStudentId()+ " : " + account.getStudentName());
-
+                //* User Info Exist DB Log */
+                log.info("Google User Info: {}, Name: {}, Email: {}", googleUserId, studentId, userName);
+ 
                 return generateTokenResponse(account);
             } else {
                 System.out.println("기존 학생 정보가 없어 정보를 갱신합니다");

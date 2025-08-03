@@ -7,11 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gate.houi.backend.data.entityType.StudentEntity;
+import com.gate.houi.backend.data.enumType.ErrorType;
 import com.gate.houi.backend.data.entityType.RefreshTokenEntity;
 import com.gate.houi.backend.dto.auth.JwtTokenResponseDTO;
-import com.gate.houi.backend.exception.AuthenticationException;
-import com.gate.houi.backend.exception.TokenExpiredException;
-import com.gate.houi.backend.exception.UserNotFoundException;
+import com.gate.houi.backend.exception.BaseException;
 import com.gate.houi.backend.repository.StudentRepository;
 import com.gate.houi.backend.repository.RefreshTokenRepository;
 import com.gate.houi.backend.security.JwtTokenProvider;
@@ -52,18 +51,18 @@ public class RefreshTokenService {
     public JwtTokenResponseDTO refreshAccessToken(String refreshToken) {
         // 리프레시 토큰으로 DB에서 조회
         RefreshTokenEntity refreshTokenEntity = refreshTokenRepository.findByRefreshToken(refreshToken)
-                .orElseThrow(() -> new TokenExpiredException());
+                .orElseThrow(() -> new BaseException(ErrorType.TOKEN_EXPIRED.getErrorCode(), ErrorType.TOKEN_EXPIRED.getErrorMessage()));
 
         // 리프레시 토큰이 만료되었는지 확인
         if (jwtTokenProvider.isTokenExpired(refreshTokenEntity.getRefreshToken())) {
             // 만료된 토큰 삭제
             refreshTokenRepository.delete(refreshTokenEntity);
-            throw new AuthenticationException();
+            throw new BaseException(ErrorType.TOKEN_EXPIRED.getErrorCode(), ErrorType.TOKEN_EXPIRED.getErrorMessage());
         }
 
         // UUID로 UserEntity 조회
         StudentEntity userEntity = userRepository.findByStudentUuid(refreshTokenEntity.getStudentUuid())
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(() -> new BaseException(ErrorType.NOT_FOUND_USER.getErrorCode(), ErrorType.NOT_FOUND_USER.getErrorMessage()));
         
         // 보안을 위해 OAuth ID를 JWT 토큰에 사용 (일관성 있는 식별자)
         String newAccessToken = jwtTokenProvider.generateAccessToken(userEntity.getOauthId());

@@ -6,8 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gate.houi.backend.data.entityType.StudentEntity;
+import com.gate.houi.backend.data.enumType.ErrorType;
 import com.gate.houi.backend.dto.student.StudentProfileResponseDTO;
-import com.gate.houi.backend.exception.UserNotFoundException;
+import com.gate.houi.backend.exception.BaseException;
 import com.gate.houi.backend.repository.StudentRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public StudentProfileResponseDTO getAccountProfile(String oauthId) {
         StudentEntity userEntity = accountRepository.findByOauthId(oauthId)
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(() -> new BaseException(ErrorType.NOT_FOUND_USER.getErrorCode(), ErrorType.NOT_FOUND_USER.getErrorMessage()));
 
         return convertToDto(userEntity);
     }
@@ -29,7 +30,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public StudentProfileResponseDTO getDetailedAccountProfile(String oauthId) {
         StudentEntity userEntity = accountRepository.findByOauthId(oauthId)
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(() -> new BaseException(ErrorType.NOT_FOUND_USER.getErrorCode(), ErrorType.NOT_FOUND_USER.getErrorMessage()));
 
         return StudentProfileResponseDTO.builder()
                 .studentUuid(userEntity.getStudentUuid())
@@ -47,8 +48,8 @@ public class UserService {
     @Transactional(readOnly = true)
     public UUID getStudentUuidByOauthId(String oauthId) {
         StudentEntity userEntity = accountRepository.findByOauthId(oauthId)
-                .orElseThrow(() -> new UserNotFoundException());
-        
+                .orElseThrow(() -> new BaseException(ErrorType.NOT_FOUND_USER.getErrorCode(), ErrorType.NOT_FOUND_USER.getErrorMessage()));
+
         return userEntity.getStudentUuid();
     }
 

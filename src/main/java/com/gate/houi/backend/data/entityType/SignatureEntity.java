@@ -2,6 +2,8 @@ package com.gate.houi.backend.data.entityType;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -36,6 +38,7 @@ public class SignatureEntity {
     @Column(name = "student_uuid", nullable = false)
     private UUID studentUuid;
 
+    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_uuid", referencedColumnName = "student_uuid", insertable = false, updatable = false)
     private StudentEntity studentEntity;

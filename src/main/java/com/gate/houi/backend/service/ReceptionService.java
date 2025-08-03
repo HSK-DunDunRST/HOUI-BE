@@ -11,13 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.gate.houi.backend.data.entityType.StudentEntity;
 import com.gate.houi.backend.data.entityType.ReceptionEntity;
 import com.gate.houi.backend.data.enumType.CampusType;
+import com.gate.houi.backend.data.enumType.ErrorType;
 import com.gate.houi.backend.data.enumType.ReceptionType;
 import com.gate.houi.backend.dto.history.AllUsageHistoryResponseDTO;
 import com.gate.houi.backend.dto.history.UsageHistoryResponseDTO;
 import com.gate.houi.backend.dto.reception.ReceptionRegisterRequestDTO;
 import com.gate.houi.backend.dto.reception.ReceptionRegisterResponseDTO;
-import com.gate.houi.backend.exception.NoticeDataNotFoundException;
-import com.gate.houi.backend.exception.RequiredDataMissingException;
+import com.gate.houi.backend.exception.BaseException;
 import com.gate.houi.backend.repository.StudentRepository;
 import com.gate.houi.backend.repository.ReceptionRepository;
 
@@ -36,12 +36,12 @@ public class ReceptionService {
     public ReceptionRegisterResponseDTO RegisterReception(ReceptionRegisterRequestDTO receptionRequestDTO, UUID studentUuid) {
         // 필수 데이터(진료 증상)가 전달되지 않았으면 예외 발생
         if (receptionRequestDTO.getSymptomsContent().isEmpty()) {
-            throw new RequiredDataMissingException();
+            throw new BaseException(ErrorType.MISSING_REQUIRED_FIELDS.getErrorCode(), ErrorType.MISSING_REQUIRED_FIELDS.getErrorMessage());
         }
 
         // studentUuid로 학생 정보 조회 (존재 여부 확인용)
         StudentEntity accountEntity = studentRepository.findByStudentUuid(studentUuid)
-                .orElseThrow(() -> new RuntimeException("학생 정보를 찾을 수 없습니다."));
+                .orElseThrow(() -> new BaseException(ErrorType.NOT_FOUND_REQUEST_DATA.getErrorCode(), ErrorType.NOT_FOUND_REQUEST_DATA.getErrorMessage()));
         
         // DTO로부터 ReceptionEntity 생성
         ReceptionEntity receptionEntity = ReceptionEntity.builder()
@@ -76,7 +76,7 @@ public class ReceptionService {
     private AllUsageHistoryResponseDTO convertToDto(ReceptionEntity receptionEntity) {
         // studentUuid로 학생 정보 조회
         StudentEntity accountEntity = studentRepository.findByStudentUuid(receptionEntity.getStudentUuid())
-                .orElseThrow(() -> new NoticeDataNotFoundException());
+                .orElseThrow(() -> new BaseException(ErrorType.NOT_FOUND_REQUEST_DATA.getErrorCode(), ErrorType.NOT_FOUND_REQUEST_DATA.getErrorMessage()));
         
         return AllUsageHistoryResponseDTO.builder()
             .id(receptionEntity.getId())

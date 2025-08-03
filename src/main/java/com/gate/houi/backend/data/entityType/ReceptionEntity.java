@@ -21,6 +21,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gate.houi.backend.data.common.BaseTimeEntity;
 import com.gate.houi.backend.data.enumType.CampusType;
 import com.gate.houi.backend.data.enumType.ReceptionType;
@@ -60,6 +61,7 @@ public class ReceptionEntity extends BaseTimeEntity {
     @Column(name = "reception_type", nullable = false)
     private ReceptionType receptionType;
     
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_uuid", referencedColumnName = "student_uuid", insertable = false, updatable = false)
     private StudentEntity studentEntity;
