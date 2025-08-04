@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.gate.houi.backend.data.entityType.AccountEntity;
-import com.gate.houi.backend.repository.AccountRepository;
+import com.gate.houi.backend.data.entityType.StudentEntity;
+import com.gate.houi.backend.repository.StudentRepository;
 
 import java.util.Collections;
 
@@ -16,13 +16,13 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final AccountRepository accountRepository;
+    private final StudentRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // JWT 토큰에서는 OAuth ID가 전달되므로 OAuth ID로 사용자를 찾습니다
-        AccountEntity accountEntity = accountRepository.findByOauthId(username)
-                .orElseThrow(() -> new UsernameNotFoundException("OAuth ID로 사용자 조회 실패: " + username));
+        StudentEntity accountEntity = userRepository.findByOauthId(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Failed to retrieve user by OAuth ID: " + username));
 
         // 사용자 권한 설정 (ROLE_ 접두사 추가)
         String role = "ROLE_" + accountEntity.getRole().name();

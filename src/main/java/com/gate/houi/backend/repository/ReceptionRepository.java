@@ -12,19 +12,19 @@ import com.gate.houi.backend.data.enumType.ReceptionType;
 @Repository
 public interface ReceptionRepository extends JpaRepository<ReceptionEntity, Long> {
 
-    // accountUuid로 조회
-    List<ReceptionEntity> findByAccountUuid(UUID accountUuid);
+    // studentUuid로 조회
+    List<ReceptionEntity> findByStudentUuid(UUID studentUuid);
     
-    // accountUuid로 조회하되 생성시간 오름차순으로 정렬 (가장 먼저 접수한 순)
-    List<ReceptionEntity> findByAccountUuidOrderByCreatedAt(UUID accountUuid);
-    
+    // studentUuid로 조회하되 생성시간 오름차순으로 정렬 (가장 먼저 접수한 순)
+    List<ReceptionEntity> findByStudentUuidOrderByCreatedAt(UUID studentUuid);
+
     // 대기중인 접수들을 생성시간 오름차순으로 조회 (가장 먼저 접수한 순)
     List<ReceptionEntity> findByReceptionTypeOrderByCreatedAt(ReceptionType receptionStatus);
     
     // 대기중인 접수 개수 조회
     long countByReceptionType(ReceptionType receptionStatus);
-    
-    // 특정 사용자의 처방 완료된 접수들 조회 (accountUuid 사용)
-    List<ReceptionEntity> findByAccountUuidAndReceptionTypeOrderByCreatedAt(UUID accountUuid, ReceptionType receptionType);
+
+    // 특정 사용자의 처방 완료된 접수들 조회 (studentUuid 사용)
+    List<ReceptionEntity> findByStudentUuidAndReceptionTypeOrderByCreatedAt(UUID studentUuid, ReceptionType receptionType);
 
 }

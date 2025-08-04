@@ -10,14 +10,21 @@ public enum ErrorType {
     
     // Error Code - 400
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "잘못된 요청이에요."),
+    INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "입력값이 올바르지 않아요."),
     MISSING_REQUIRED_FIELDS(HttpStatus.BAD_REQUEST, "입력 항목을 다시 확인해주세요."),
-    INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "입력값이 유효하지 않아요."),
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "허용되지 않은 HTTP 메서드예요."),
+    
+    // Image Upload Errors
+    INVALID_FILE_SIZE(HttpStatus.BAD_REQUEST, "파일 크기가 너무 커요."),
+    INVALID_FILE_FORMAT(HttpStatus.BAD_REQUEST, "지원하지 않는 파일 형식이에요."),
+    INVALID_FILE_NAME(HttpStatus.BAD_REQUEST, "유효하지 않은 파일 이름이에요."),
+    INVALID_FILE_URL(HttpStatus.BAD_REQUEST, "유효하지 않은 파일 URL이에요."),
     
     // Error code - 401
     UNAUTHORIZED_ACCESS(HttpStatus.UNAUTHORIZED, "인증되지 않은 접근이에요. 로그인이 필요해요."),
     AUTHENTICATION_FAILED(HttpStatus.UNAUTHORIZED, "인증 처리 중 오류가 발생했어요."),
     TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "토큰이 만료되었어요."),
+    TOKEN_VALIDATION_FAILED(HttpStatus.UNAUTHORIZED, "토큰 검증에 실패했어요."),
     
     // Error code - 200 (No data available)
     NO_NOTICE_AVAILABLE(HttpStatus.OK, "등록된 공지사항이 없어요."),
@@ -31,7 +38,9 @@ public enum ErrorType {
     NOT_FOUND_ENDPOINT(HttpStatus.NOT_FOUND, "요청한 리소스를 찾을 수 없어요."),
     
     // Error code - 500
-    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "요청을 처리하는 도중에 문제가 발생했어요!");
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "요청을 처리하는 도중에 문제가 발생했어요!"),
+    SIGNATURE_PROCESSING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서명 처리 중 오류가 발생했어요."),
+    SIGNATURE_DELETE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "서명 삭제 중 오류가 발생했어요.");
 
     private final HttpStatus errorCode;
     private final String errorMessage;

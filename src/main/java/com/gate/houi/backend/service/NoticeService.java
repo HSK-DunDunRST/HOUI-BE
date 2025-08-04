@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gate.houi.backend.data.entityType.NoticeEntity;
+import com.gate.houi.backend.data.enumType.ErrorType;
 import com.gate.houi.backend.dto.notice.NoticeRequestDTO;
 import com.gate.houi.backend.dto.notice.NoticeResponseDTO;
-import com.gate.houi.backend.exception.RequestDataNotFoundException;
-import com.gate.houi.backend.exception.RequiredDataMissingException;
+import com.gate.houi.backend.exception.BaseException;
 import com.gate.houi.backend.repository.NoticeRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -24,9 +24,14 @@ public class NoticeService {
     @Transactional(readOnly = true)
     // 모든 공지사항 조회 후 DTO 리스트로 반환
     public List<NoticeResponseDTO> getAllNotices() {
-        return noticeRepository.findAll().stream()
-                .map(this::convertToDto) // 엔티티를 DTO로 변환
-                .collect(Collectors.toList());
+        if (noticeRepository.findAll().isEmpty()) {
+            throw new BaseException(ErrorType.NO_NOTICE_AVAILABLE.getErrorCode(), ErrorType.NO_NOTICE_AVAILABLE.getErrorMessage()); // 공지사항이 없으면 예외 발생
+        } else {
+            // 공지사항이 존재하면 모든 공지사항을 조회하여 DTO 리스트로 변환 후 반환
+            return noticeRepository.findAll().stream()
+                    .map(this::convertToDto) // 엔티티를 DTO로 변환
+                    .collect(Collectors.toList());
+        }
     }
 
     @Transactional(readOnly = true)
@@ -35,7 +40,7 @@ public class NoticeService {
         // 최신 공지사항을 검색
         return noticeRepository.findFirstByOrderByCreatedAtDesc()
                 .map(this::convertToDto)
-                .orElse(null); // 공지사항이 없으면 null 반환
+                .orElseThrow(() -> new BaseException(ErrorType.NO_NOTICE_AVAILABLE.getErrorCode(), ErrorType.NO_NOTICE_AVAILABLE.getErrorMessage())); // 공지사항이 없으면 예외 발생
     }
 
     @Transactional
@@ -43,7 +48,7 @@ public class NoticeService {
     public NoticeResponseDTO createNotice(NoticeRequestDTO noticeRequestDTO) {
         // 필수 데이터(공지 제목)가 전달되지 않았으면 예외 발생
         if (noticeRequestDTO.getNoticeTitle() == null || noticeRequestDTO.getNoticeTitle().isEmpty()) {
-            throw new RequiredDataMissingException();
+            throw new BaseException(ErrorType.MISSING_REQUIRED_FIELDS.getErrorCode(), ErrorType.MISSING_REQUIRED_FIELDS.getErrorMessage());
         }
         
         // DTO로부터 NoticeEntity 생성
@@ -62,11 +67,11 @@ public class NoticeService {
     public NoticeResponseDTO updateNotice(Long id, NoticeRequestDTO noticeRequestDTO) {
         // 해당 id의 공지사항을 조회하고 없으면 예외 발생
         NoticeEntity notice = noticeRepository.findById(id)
-                .orElseThrow(() -> new RequestDataNotFoundException());
+                .orElseThrow(() -> new BaseException(ErrorType.NOT_FOUND_REQUEST_DATA.getErrorCode(), ErrorType.NOT_FOUND_REQUEST_DATA.getErrorMessage()));
         
         // 필수 데이터(공지 제목)가 전달되지 않았으면 예외 발생
         if (noticeRequestDTO.getNoticeTitle() == null || noticeRequestDTO.getNoticeTitle().isEmpty()) {
-            throw new RequiredDataMissingException();
+            throw new BaseException(ErrorType.MISSING_REQUIRED_FIELDS.getErrorCode(), ErrorType.MISSING_REQUIRED_FIELDS.getErrorMessage());
         }
         // 전달 받은 데이터로 제목과 내용을 업데이트
         notice.setNoticeTitle(noticeRequestDTO.getNoticeTitle());
@@ -82,7 +87,7 @@ public class NoticeService {
     public NoticeResponseDTO deleteNotice(Long id) {
         // 해당 id의 공지사항을 조회하고 없으면 예외 발생
         NoticeEntity notice = noticeRepository.findById(id)
-                .orElseThrow(() -> new RequestDataNotFoundException());
+                .orElseThrow(() -> new BaseException(ErrorType.NOT_FOUND_REQUEST_DATA.getErrorCode(), ErrorType.NOT_FOUND_REQUEST_DATA.getErrorMessage()));
 
         // 공지사항 삭제
         noticeRepository.delete(notice);

@@ -6,13 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.gate.houi.backend.data.entityType.AccountEntity;
+import com.gate.houi.backend.data.entityType.StudentEntity;
+import com.gate.houi.backend.data.enumType.ErrorType;
 import com.gate.houi.backend.data.entityType.RefreshTokenEntity;
 import com.gate.houi.backend.dto.auth.JwtTokenResponseDTO;
-import com.gate.houi.backend.exception.AuthenticationException;
-import com.gate.houi.backend.exception.TokenExpiredException;
-import com.gate.houi.backend.exception.UserNotFoundException;
-import com.gate.houi.backend.repository.AccountRepository;
+import com.gate.houi.backend.exception.BaseException;
+import com.gate.houi.backend.repository.StudentRepository;
 import com.gate.houi.backend.repository.RefreshTokenRepository;
 import com.gate.houi.backend.security.JwtTokenProvider;
 
@@ -27,13 +26,13 @@ public class RefreshTokenService {
     @Autowired
     private final JwtTokenProvider jwtTokenProvider;
     @Autowired
-    private final AccountRepository accountRepository;
+    private final StudentRepository userRepository;
 
     @Transactional
-    public void saveRefreshToken(AccountEntity accountEntity, String refreshToken) {
+    public void saveRefreshToken(StudentEntity studentEntity, String refreshToken) {
         // 기존 리프레시 토큰이 있으면 업데이트, 없으면 새로 생성
-        Optional<RefreshTokenEntity> existingToken = refreshTokenRepository.findByAccountUuid(accountEntity.getAccountUuid());
-        
+        Optional<RefreshTokenEntity> existingToken = refreshTokenRepository.findByStudentUuid(studentEntity.getStudentUuid());
+
         if (existingToken.isPresent()) {
             // 기존 토큰 업데이트
             existingToken.get().update(refreshToken);
@@ -41,7 +40,7 @@ public class RefreshTokenService {
         } else {
             // 새로운 토큰 생성
             RefreshTokenEntity newRefreshToken = RefreshTokenEntity.builder()
-                    .accountUuid(accountEntity.getAccountUuid())
+                    .studentUuid(studentEntity.getStudentUuid())
                     .refreshToken(refreshToken)
                     .build();
             refreshTokenRepository.save(newRefreshToken);
@@ -52,22 +51,22 @@ public class RefreshTokenService {
     public JwtTokenResponseDTO refreshAccessToken(String refreshToken) {
         // 리프레시 토큰으로 DB에서 조회
         RefreshTokenEntity refreshTokenEntity = refreshTokenRepository.findByRefreshToken(refreshToken)
-                .orElseThrow(() -> new TokenExpiredException());
+                .orElseThrow(() -> new BaseException(ErrorType.TOKEN_EXPIRED.getErrorCode(), ErrorType.TOKEN_EXPIRED.getErrorMessage()));
 
         // 리프레시 토큰이 만료되었는지 확인
-        if (jwtTokenProvider.isTokenExpired(refreshToken)) {
+        if (jwtTokenProvider.isTokenExpired(refreshTokenEntity.getRefreshToken())) {
             // 만료된 토큰 삭제
             refreshTokenRepository.delete(refreshTokenEntity);
-            throw new AuthenticationException();
+            throw new BaseException(ErrorType.TOKEN_EXPIRED.getErrorCode(), ErrorType.TOKEN_EXPIRED.getErrorMessage());
         }
 
-        // UUID로 AccountEntity 조회
-        AccountEntity accountEntity = accountRepository.findByAccountUuid(refreshTokenEntity.getAccountUuid())
-                .orElseThrow(() -> new UserNotFoundException());
+        // UUID로 UserEntity 조회
+        StudentEntity userEntity = userRepository.findByStudentUuid(refreshTokenEntity.getStudentUuid())
+                .orElseThrow(() -> new BaseException(ErrorType.NOT_FOUND_USER.getErrorCode(), ErrorType.NOT_FOUND_USER.getErrorMessage()));
         
-        // 보안을 위해 OAuth ID를 JWT 토큰에 사용
-        String newAccessToken = jwtTokenProvider.generateAccessToken(accountEntity.getOauthId());
-        String newRefreshToken = jwtTokenProvider.generateRefreshToken(accountEntity.getOauthId());
+        // 보안을 위해 OAuth ID를 JWT 토큰에 사용 (일관성 있는 식별자)
+        String newAccessToken = jwtTokenProvider.generateAccessToken(userEntity.getOauthId());
+        String newRefreshToken = jwtTokenProvider.generateRefreshToken(userEntity.getOauthId());
 
         // 새로운 리프레시 토큰을 DB에 저장
         refreshTokenEntity.update(newRefreshToken);
@@ -80,8 +79,8 @@ public class RefreshTokenService {
     }
 
     @Transactional
-    public void deleteRefreshToken(AccountEntity accountEntity) {
-        refreshTokenRepository.deleteByAccountUuid(accountEntity.getAccountUuid());
+    public void deleteRefreshToken(StudentEntity studentEntity) {
+        refreshTokenRepository.deleteByStudentUuid(studentEntity.getStudentUuid());
     }
 
     @Transactional(readOnly = true)

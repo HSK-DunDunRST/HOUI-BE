@@ -44,18 +44,18 @@ public class JwtTokenProvider {
     @Value("${jwt.expiration.refreshTokenValidityInSeconds}")
     private long refreshTokenValidityInSeconds;
 
-    public String generateAccessToken(String username) {
-        return generateToken(username, accessTokenValidityInSeconds, TOKEN_TYPE_ACCESS);
+    public String generateAccessToken(String studentUuid) {
+        return generateToken(studentUuid, accessTokenValidityInSeconds, TOKEN_TYPE_ACCESS);
     }
 
-    public String generateRefreshToken(String username) {
-        return generateToken(username, refreshTokenValidityInSeconds, TOKEN_TYPE_REFRESH);
+    public String generateRefreshToken(String studentUuid) {
+        return generateToken(studentUuid, refreshTokenValidityInSeconds, TOKEN_TYPE_REFRESH);
     }
 
-    private String generateToken(String username, long validityInSeconds, String tokenType) {
+    private String generateToken(String studentUuid, long validityInSeconds, String tokenType) {
         // 입력 값 검증
-        if (!StringUtils.hasText(username)) {
-            throw new IllegalArgumentException("사용자명은 null이거나 비어있을 수 없습니다");
+        if (!StringUtils.hasText(studentUuid)) {
+            throw new IllegalArgumentException("사용자 UUID는 null이거나 비어있을 수 없습니다");
         }
         if (validityInSeconds <= 0) {
             throw new IllegalArgumentException("토큰 유효기간은 양수여야 합니다");
@@ -71,7 +71,7 @@ public class JwtTokenProvider {
         
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(username)
+                .setSubject(studentUuid)
                 .setIssuedAt(now)
                 .setExpiration(expiration)
                 .setIssuer(ISSUER_VALUE) // 발급자 명시적 설정

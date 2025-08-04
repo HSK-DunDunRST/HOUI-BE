@@ -5,7 +5,6 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class ReceptionRegisterResponseDTO {
-    private Long id;
+public class ReceptionStatusDTO {
     private Integer waitingPeople;
 }
