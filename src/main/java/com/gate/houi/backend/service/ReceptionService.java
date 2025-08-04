@@ -16,7 +16,7 @@ import com.gate.houi.backend.data.enumType.ReceptionType;
 import com.gate.houi.backend.dto.history.AllUsageHistoryResponseDTO;
 import com.gate.houi.backend.dto.history.UsageHistoryResponseDTO;
 import com.gate.houi.backend.dto.reception.ReceptionRegisterRequestDTO;
-import com.gate.houi.backend.dto.reception.ReceptionRegisterResponseDTO;
+import com.gate.houi.backend.dto.reception.ReceptionStatusDTO;
 import com.gate.houi.backend.exception.BaseException;
 import com.gate.houi.backend.repository.StudentRepository;
 import com.gate.houi.backend.repository.ReceptionRepository;
@@ -33,7 +33,7 @@ public class ReceptionService {
 
     @Transactional
     // 새로운 접수 객체 생성 후 DTO로 반환
-    public ReceptionRegisterResponseDTO RegisterReception(ReceptionRegisterRequestDTO receptionRequestDTO, UUID studentUuid) {
+    public ReceptionStatusDTO RegisterReception(ReceptionRegisterRequestDTO receptionRequestDTO, UUID studentUuid) {
         // 필수 데이터(진료 증상)가 전달되지 않았으면 예외 발생
         if (receptionRequestDTO.getSymptomsContent().isEmpty()) {
             throw new BaseException(ErrorType.MISSING_REQUIRED_FIELDS.getErrorCode(), ErrorType.MISSING_REQUIRED_FIELDS.getErrorMessage());
@@ -105,7 +105,7 @@ public class ReceptionService {
     }
 
     // 접수 등록 시 사용하는 간단한 DTO 변환 메서드 (대기인원수만 포함)
-    private ReceptionRegisterResponseDTO convertToDtoForRegistration(ReceptionEntity receptionEntity) {
+    private ReceptionStatusDTO convertToDtoForRegistration(ReceptionEntity receptionEntity) {
         // 대기 정보 계산
         Integer totalWaitingCount = null;
         // 대기 상태인 경우에만 대기 인원수 계산
@@ -114,9 +114,7 @@ public class ReceptionService {
             long totalCount = receptionRepository.countByReceptionType(ReceptionType.WAITING);
             totalWaitingCount = (int) (totalCount - 1);
         }
-        
-        return ReceptionRegisterResponseDTO.builder()
-            .id(receptionEntity.getId())
+        return ReceptionStatusDTO.builder()
             .waitingPeople(totalWaitingCount)
             .build();
     }

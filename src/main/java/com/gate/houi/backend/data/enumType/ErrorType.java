@@ -24,6 +24,7 @@ public enum ErrorType {
     UNAUTHORIZED_ACCESS(HttpStatus.UNAUTHORIZED, "인증되지 않은 접근이에요. 로그인이 필요해요."),
     AUTHENTICATION_FAILED(HttpStatus.UNAUTHORIZED, "인증 처리 중 오류가 발생했어요."),
     TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "토큰이 만료되었어요."),
+    TOKEN_VALIDATION_FAILED(HttpStatus.UNAUTHORIZED, "토큰 검증에 실패했어요."),
     
     // Error code - 200 (No data available)
     NO_NOTICE_AVAILABLE(HttpStatus.OK, "등록된 공지사항이 없어요."),

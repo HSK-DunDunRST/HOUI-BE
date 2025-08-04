@@ -24,9 +24,14 @@ public class NoticeService {
     @Transactional(readOnly = true)
     // 모든 공지사항 조회 후 DTO 리스트로 반환
     public List<NoticeResponseDTO> getAllNotices() {
-        return noticeRepository.findAll().stream()
-                .map(this::convertToDto) // 엔티티를 DTO로 변환
-                .collect(Collectors.toList());
+        if (noticeRepository.findAll().isEmpty()) {
+            throw new BaseException(ErrorType.NO_NOTICE_AVAILABLE.getErrorCode(), ErrorType.NO_NOTICE_AVAILABLE.getErrorMessage()); // 공지사항이 없으면 예외 발생
+        } else {
+            // 공지사항이 존재하면 모든 공지사항을 조회하여 DTO 리스트로 변환 후 반환
+            return noticeRepository.findAll().stream()
+                    .map(this::convertToDto) // 엔티티를 DTO로 변환
+                    .collect(Collectors.toList());
+        }
     }
 
     @Transactional(readOnly = true)
@@ -35,7 +40,7 @@ public class NoticeService {
         // 최신 공지사항을 검색
         return noticeRepository.findFirstByOrderByCreatedAtDesc()
                 .map(this::convertToDto)
-                .orElse(null); // 공지사항이 없으면 null 반환
+                .orElseThrow(() -> new BaseException(ErrorType.NO_NOTICE_AVAILABLE.getErrorCode(), ErrorType.NO_NOTICE_AVAILABLE.getErrorMessage())); // 공지사항이 없으면 예외 발생
     }
 
     @Transactional

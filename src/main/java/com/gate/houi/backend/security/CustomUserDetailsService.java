@@ -22,7 +22,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // JWT 토큰에서는 OAuth ID가 전달되므로 OAuth ID로 사용자를 찾습니다
         StudentEntity accountEntity = userRepository.findByOauthId(username)
-                .orElseThrow(() -> new UsernameNotFoundException("OAuth ID로 사용자 조회 실패: " + username));
+                .orElseThrow(() -> new UsernameNotFoundException("Failed to retrieve user by OAuth ID: " + username));
 
         // 사용자 권한 설정 (ROLE_ 접두사 추가)
         String role = "ROLE_" + accountEntity.getRole().name();

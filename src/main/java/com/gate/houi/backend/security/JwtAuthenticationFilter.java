@@ -14,8 +14,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.gate.houi.backend.exception.AuthenticationException;
-import com.gate.houi.backend.exception.TokenExpiredException;
+import com.gate.houi.backend.data.enumType.ErrorType;
+import com.gate.houi.backend.exception.BaseException;
 
 import java.io.IOException;
 
@@ -63,12 +63,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             }
-        } catch (TokenExpiredException e) {
-            System.out.println("JWT 토큰이 만료되었습니다");
-            throw new TokenExpiredException();
+        } catch (BaseException baseException) {
+            throw new BaseException(ErrorType.TOKEN_EXPIRED.getErrorCode(), ErrorType.TOKEN_EXPIRED.getErrorMessage());
         } catch (Exception e) {
-            System.out.println("JWT 검증 실패");
-            throw new AuthenticationException();
+            throw new BaseException(ErrorType.TOKEN_VALIDATION_FAILED.getErrorCode(), ErrorType.TOKEN_VALIDATION_FAILED.getErrorMessage());
         }
         
         filterChain.doFilter(request, response);

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gate.houi.backend.dto.history.UsageHistoryResponseDTO;
 import com.gate.houi.backend.dto.reception.ReceptionRegisterRequestDTO;
-import com.gate.houi.backend.dto.reception.ReceptionRegisterResponseDTO;
+import com.gate.houi.backend.dto.reception.ReceptionStatusDTO;
 import com.gate.houi.backend.service.ReceptionService;
 import com.gate.houi.backend.service.UserService;
 
@@ -34,7 +34,7 @@ public class ReceptionController {
 
     // 새로운 진료접수 등록
     @PostMapping("/register")
-    public ResponseEntity<ReceptionRegisterResponseDTO> addReception(@RequestBody ReceptionRegisterRequestDTO receptionRequestDTO,
+    public ResponseEntity<ReceptionStatusDTO> addReception(@RequestBody ReceptionRegisterRequestDTO receptionRequestDTO,
                                                             @AuthenticationPrincipal UserDetails userDetails) {
         // OAuth ID로 UUID 조회 (보안상 분리)
         String oauthId = userDetails.getUsername();

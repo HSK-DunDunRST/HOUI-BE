@@ -37,8 +37,6 @@ public class AuthService {
         try {
             GoogleIdToken googleIdToken = googleIdTokenVerifier.verify(googleTokenRequest.getToken());
             if (googleIdToken == null) {
-                //* Google Authentication Token Log */
-                log.warn("Google Token is null or invalid");
                 throw new BaseException(ErrorType.AUTHENTICATION_FAILED.getErrorCode(), ErrorType.AUTHENTICATION_FAILED.getErrorMessage());
             }
             //* Google Authentication Log */
@@ -66,7 +64,7 @@ public class AuthService {
 
                 //* User Info Exist DB Log */
                 log.info("Google User Info: {}, Name: {}, Email: {}", googleUserId, studentId, userName);
- 
+
                 return generateTokenResponse(account);
             } else {
                 System.out.println("기존 학생 정보가 없어 정보를 갱신합니다");
