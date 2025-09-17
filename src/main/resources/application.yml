@@ -1,0 +1,14 @@
+spring:
+    application:
+      name: be
+      version: 1.0.0
+    profiles:
+      active: local
+      include: oauth
+    web:
+      resources:
+        add-mappings: false
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1

@@ -35,3 +35,10 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Macbook File System ###
+.DS_Store
+
+### For Security Ignore ###
+application-local.yml
+application-oauth.yml
