@@ -9,18 +9,18 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public enum ErrorStatus implements BaseErrorCode {
+public enum ErrorType implements BaseErrorCode {
     // 에러 예시
     FAIL_OOOOO(HttpStatus.BAD_REQUEST, "FAIL", "실패하였습니다."),
 
     // 토큰 관련 에러
-    TOKEN_FORBIDDEN(HttpStatus.FORBIDDEN, "JWT4000", "권한이 없습니다."),
-    TOKEN_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "JWT4001", "인증이 필요합니다."),
-    TOKEN_INVALID(HttpStatus.UNAUTHORIZED, "JWT4002", "유효하지 않은 리프레시 토큰입니다."),
-    TOKEN_EMPTY(HttpStatus.UNAUTHORIZED, "JWT4003", "JWT 토큰을 넣어주세요."),
-    TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "JWT4004", "만료된 토큰입니다."),
-    TOKEN_NOT_MATCHED(HttpStatus.UNAUTHORIZED, "JWT4005", "RefreshToken이 일치하지 않습니다."),
-    TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "JWT4031", "리프레시 토큰이 존재하지 않거나 만료되었습니다."),
+    TOKEN_FORBIDDEN(HttpStatus.FORBIDDEN, "JWT403", "권한이 없습니다."),
+    TOKEN_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "JWT401", "인증이 필요합니다."),
+    TOKEN_INVALID(HttpStatus.UNAUTHORIZED, "JWT401", "유효하지 않은 리프레시 토큰입니다."),
+    TOKEN_EMPTY(HttpStatus.UNAUTHORIZED, "JWT401", "JWT 토큰을 넣어주세요."),
+    TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "JWT401", "만료된 토큰입니다."),
+    TOKEN_NOT_MATCHED(HttpStatus.UNAUTHORIZED, "JWT401", "RefreshToken이 일치하지 않습니다."),
+    TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "JWT401", "리프레시 토큰이 존재하지 않거나 만료되었습니다."),
 
     // 일반적인 응답
     _INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON500", "서버 에러, 관리자에게 문의 바랍니다."),
@@ -30,14 +30,12 @@ public enum ErrorStatus implements BaseErrorCode {
     RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "RESOURCE404", "리소스를 찾을 수 없습니다."),
 
     // 사용자 관련
-    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER4004", "사용자를 찾을 수 없습니다."),
-    USER_INFO_NOT_FOUND(HttpStatus.NOT_FOUND, "USERINFO4004", "저장된 사용자 정보가 없습니다."),
-    UNAUTHORIZED(HttpStatus.FORBIDDEN, "USERINFO4001", "정보 수정 권한이 없습니다."),
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER404", "사용자를 찾을 수 없습니다."),
+    USER_INFO_NOT_FOUND(HttpStatus.NOT_FOUND, "USERINFO404", "저장된 사용자 정보가 없습니다."),
+    UNAUTHORIZED(HttpStatus.FORBIDDEN, "USERINFO403", "정보 수정 권한이 없습니다."),
 
-    //로그인 관련
-    EMAIL_REGISTERED_WITH_KAKAO(HttpStatus.BAD_REQUEST, "AUTH4006", "해당 이메일은 카카오 계정으로 가입되어 있습니다."),
-    EMAIL_REGISTERED_WITH_LOCAL(HttpStatus.BAD_REQUEST, "AUTH4007", "이미 로컬 계정으로 가입되어 있습니다."),
-    LOCAL_LOGIN_FOR_KAKAO_EMAIL(HttpStatus.UNAUTHORIZED, "AUTH4008", "카카오 계정으로 로그인해주세요.");
+    // 공직사항 조회
+    NOT_FOUND_NOTICE_DATA(HttpStatus.NOT_FOUND, "NOTICE404", "불러올 공지사항이 없어요.");
 
 
     private final HttpStatus httpStatus;

@@ -7,6 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NoticeResDto {
+    private Long noticeId;
     private String noticeTitle;
     private String noticeContent;
     private String noticeCreatedAt;

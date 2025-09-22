@@ -9,7 +9,7 @@ import lombok.extern.log4j.Log4j2;
 @Getter
 @AllArgsConstructor
 @Log4j2
-public class GeneralException extends RuntimeException {
+public class BaseException extends RuntimeException {
 
     private BaseErrorCode code;
 
