@@ -24,7 +24,7 @@ public class CustomUserDetail implements UserDetails {
     }
     @Override
     public String getPassword() {
-        return String.valueOf(userEntity.getLoginPwd());
+        return String.valueOf(userEntity.getUserPwd());
     }
 
     @Override
