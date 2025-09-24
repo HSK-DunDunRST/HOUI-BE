@@ -126,12 +126,16 @@ public class UserServiceImpl implements UserService {
 
     // 구글 조직 로그인 시 신규 회원가입 또는 기존 회원 조회
     public UserEntity googleSignup(GoogleUserInfoResDto userInfo) {
-        log.info("googleSignup userInfo= {}, {}, {}", userInfo.getStudentId(), userInfo.getStudentName(), userInfo.getStudentEmail());
-        return userRepository.findByUserEmail(userInfo.getStudentEmail())
+        log.info("googleSignup userInfo = {}, {}, {}", userInfo.getId(), userInfo.getName(), userInfo.getEmail());
+        return userRepository.findByUserEmail(userInfo.getEmail())
                 .orElseGet(() -> {
+
+                    String studentId = userInfo.getEmail().split("@")[0];
+
                     UserEntity newUser = UserEntity.builder()
-                            .userEmail(userInfo.getStudentEmail())
-                            .userName(userInfo.getStudentName())
+                            .userEmail(userInfo.getEmail())
+                            .userName(userInfo.getName())
+                            .studentId(studentId)
                             .userPwd(null)
                             .oauthProvider(Provider.GOOGLE)
                             .role(UserRole.STUDENT)

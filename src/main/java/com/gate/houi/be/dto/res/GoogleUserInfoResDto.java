@@ -11,10 +11,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GoogleUserInfoResDto {
-    private UUID studentUuid;
-    private String studentId;
-    private String studentName;
-    private String studentEmail;
-    private String oauthProvider;
-    private LocalDateTime createdAt;
+    private String id;
+    private String name;
+    private String email;
+    private Boolean verified_email;
 }

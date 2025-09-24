@@ -65,6 +65,7 @@ public class GoogleService {
      * 구글 사용자 정보 가져오기 (access token → userinfo)
      */
     public GoogleUserInfoResDto getUserInfo(String accessToken) {
+        log.info("Google Access Token : {}", accessToken);
         GoogleUserInfoResDto userInfo = WebClient.create(GOOGLE_USERINFO_URL_HOST)
                 .get()
                 .uri(uriBuilder -> uriBuilder
@@ -81,7 +82,7 @@ public class GoogleService {
                 .block();
 
         log.info("Google Authentication Successful");
-        log.info("Google User Info : name={}, email={}", userInfo.getStudentName(),userInfo.getStudentEmail());
+        log.info("Google User Info : name={}, email={}", userInfo.getName(),userInfo.getEmail());
 
         return userInfo;
     }
