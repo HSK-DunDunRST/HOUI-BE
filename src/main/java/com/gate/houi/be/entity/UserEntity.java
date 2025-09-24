@@ -30,7 +30,10 @@ public class UserEntity extends BaseTimeEntity {
     @Column(name = "user_name", nullable = false, length = 50)
     private String userName;
 
-    private String loginPwd; // 관리자만 사용
+    private String userPwd; // 관리자만 사용
+
+    @Column(name = "user_email", nullable = true, length = 50)
+    private String userEmail;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

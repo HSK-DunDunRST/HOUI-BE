@@ -20,11 +20,26 @@ spring:
       hibernate.format_sql: true
       dialect: org.hibernate.dialect.MySQL8InnoDBDialect
 
-#  data:
-#    redis:
-#      host: ${REDIS_URL}
-#      port: 6379
-#      password: ${REDIS_PW}
+  data:
+    redis:
+      host: ${REDIS_URL}
+      port: 6379
+      password: ${REDIS_PW}
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${OAUTH_CLIENT_ID}
+            client-secret: ${OAUTH_CLIENT_SECRET}
+            scope:
+              - email
+              - profile
+            redirect-uri: ${REDIRECT_URL}
+
+jwt:
+  secret: ${JWT_SECRET_KEY}
 
 logging:
   level:
