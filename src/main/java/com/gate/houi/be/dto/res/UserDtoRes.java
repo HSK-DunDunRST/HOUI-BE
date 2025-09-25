@@ -18,4 +18,13 @@ public class UserDtoRes {
         private String refreshToken; // 웹에선 null로 세팅해서 숨김
         private String name;
     }
+
+    @Data
+    @AllArgsConstructor
+    @Builder
+    @JsonInclude(JsonInclude.Include.NON_NULL) // null 필드는 응답에서 제외
+    public static class UserInfoRes {
+        private String studentId;
+        private String studentName;
+    }
 }

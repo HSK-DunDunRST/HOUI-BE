@@ -23,8 +23,8 @@ public class GoogleLoginController {
 
     @GetMapping("/google/callback")
     public ApiResponse<UserDtoRes.UserLoginRes> callBack(@RequestParam("code") String code, HttpServletRequest request, HttpServletResponse response){
-        String accessToken = googleService.getAccessTokenFromGoogle(code);
-        GoogleUserInfoResDto userInfo = googleService.getUserInfo(accessToken);
+        String accessToken = googleService.getIdTokenFromGoogle(code);
+        GoogleUserInfoResDto userInfo = googleService.verifyAndParseIdToken(accessToken);
 
         return ApiResponse.onSuccess(userService.googleLoginWeb(request, response, userService.googleSignup(userInfo)));
     }

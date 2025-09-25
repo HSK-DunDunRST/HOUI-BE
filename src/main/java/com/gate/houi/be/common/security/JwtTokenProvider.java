@@ -137,7 +137,7 @@ public class JwtTokenProvider {
 
     // 토큰이 블랙리스트에 있는지 확인
     public boolean isTokenInvalidated(String token) {
-        return Boolean.TRUE.equals(redisTemplate.hasKey("BL:" + token));
+        return redisTemplate.hasKey("BL:" + token);
     }
 
     // 토큰의 남은 만료 시간을 계산

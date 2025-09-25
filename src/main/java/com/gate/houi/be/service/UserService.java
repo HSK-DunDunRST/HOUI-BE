@@ -1,6 +1,6 @@
 package com.gate.houi.be.service;
 
-import com.gate.houi.be.dto.req.UserDtoReq;
+import com.gate.houi.be.dto.req.UserReqDto;
 import com.gate.houi.be.dto.res.GoogleUserInfoResDto;
 import com.gate.houi.be.dto.res.UserDtoRes;
 import com.gate.houi.be.entity.UserEntity;
@@ -11,11 +11,12 @@ public interface UserService {
     UserDtoRes.UserLoginRes loginLocal(String email, String rawPassword);
     void signUpLocal(String email, String rawPassword, String name);
     UserDtoRes.UserLoginRes loginLocalWeb(HttpServletRequest request, HttpServletResponse response, String email, String rawPassword);
-    UserDtoRes.UserLoginRes login(HttpServletRequest request, HttpServletResponse response, UserDtoReq.LoginReq loginDto);
+    UserDtoRes.UserLoginRes login(HttpServletRequest request, HttpServletResponse response, UserReqDto.LoginReq loginDto);
     void logout(String accessToken);
     void logoutWeb(HttpServletRequest request, HttpServletResponse response, String accessToken);
     UserEntity googleSignup(GoogleUserInfoResDto userInfo);
     UserDtoRes.UserLoginRes googleLogin(HttpServletRequest request, HttpServletResponse response, UserEntity userEntity);
     UserDtoRes.UserLoginRes googleLoginWeb(HttpServletRequest request, HttpServletResponse response, UserEntity userEntity);
+    UserDtoRes.UserInfoRes googleUserInfo(Long userId);
     UserDtoRes.UserLoginRes rotateTokensForApp(String refreshToken);
 }

@@ -5,7 +5,7 @@ import com.gate.houi.be.apiPayload.code.status.ErrorType;
 import com.gate.houi.be.common.security.JwtTokenProvider;
 import com.gate.houi.be.common.util.CookieUtil;
 import com.gate.houi.be.converter.UserConverter;
-import com.gate.houi.be.dto.req.UserDtoReq;
+import com.gate.houi.be.dto.req.UserReqDto;
 import com.gate.houi.be.dto.res.GoogleUserInfoResDto;
 import com.gate.houi.be.dto.res.UserDtoRes;
 import com.gate.houi.be.entity.UserEntity;
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
     // 테스트 용 로그인 처리: 이메일로 유저 찾고 토큰 발급
     @Transactional(readOnly = true)
-    public UserDtoRes.UserLoginRes login(HttpServletRequest request, HttpServletResponse response, UserDtoReq.LoginReq loginDto) {
+    public UserDtoRes.UserLoginRes login(HttpServletRequest request, HttpServletResponse response, UserReqDto.LoginReq loginDto) {
         String email = loginDto.getEmail();
 
         UserEntity userEntity = userRepository.findByUserEmail(email)
@@ -145,7 +145,7 @@ public class UserServiceImpl implements UserService {
                 });
     }
 
-    //카카오 로그인 처리 후 토큰 발급(앱)
+    // 구글 로그인 처리 후 토큰 발급(앱)
     public UserDtoRes.UserLoginRes googleLogin(HttpServletRequest request, HttpServletResponse response, UserEntity userEntity) {
         String accessToken = jwtTokenProvider.createAccessToken(userEntity.getId());
         String refreshToken = jwtTokenProvider.createRefreshToken(userEntity.getId());
@@ -153,7 +153,7 @@ public class UserServiceImpl implements UserService {
         return UserConverter.signInRes(userEntity, accessToken, refreshToken, userEntity.getUserName());
     }
 
-    // 카카오 로그인 처리 후 토큰 발급(웹-쿠키 추가)
+    // 구글 로그인 처리 후 토큰 발급(웹-쿠키 추가)
     public UserDtoRes.UserLoginRes googleLoginWeb(HttpServletRequest request, HttpServletResponse response, UserEntity userEntity) {
         String accessToken = jwtTokenProvider.createAccessToken(userEntity.getId());
         String refreshToken = jwtTokenProvider.createRefreshToken(userEntity.getId());
@@ -168,6 +168,20 @@ public class UserServiceImpl implements UserService {
         return res;
 
     }
+
+    @Override
+    public UserDtoRes.UserInfoRes googleUserInfo(Long userId) {
+        // 3. DB에서 사용자 조회
+        UserEntity userEntity = userRepository.findById(userId)
+                .orElseThrow(() -> new BaseException(ErrorType.USER_NOT_FOUND));
+
+        // 4. DTO로 변환
+        return UserDtoRes.UserInfoRes.builder()
+                .studentName(userEntity.getUserName())
+                .studentId(userEntity.getStudentId())
+                .build();
+    }
+
 
     public UserDtoRes.UserLoginRes rotateTokensForApp(String refreshToken) {
         if (refreshToken == null || refreshToken.isBlank()) {
