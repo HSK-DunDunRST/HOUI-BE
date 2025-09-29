@@ -7,6 +7,8 @@ import com.gate.houi.be.entity.UserEntity;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.util.UUID;
+
 public interface UserService {
     UserDtoRes.UserLoginRes loginLocal(String email, String rawPassword);
     void signUpLocal(String email, String rawPassword, String name);

@@ -45,3 +45,4 @@ logging:
   level:
     org.hibernate.SQL: debug
     org.springframework.cache: trace
+#    io.lettuce.core: DEBUG

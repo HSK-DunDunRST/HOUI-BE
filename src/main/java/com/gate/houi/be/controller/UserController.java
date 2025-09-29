@@ -20,6 +20,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -49,7 +51,6 @@ public class UserController {
     @PostMapping("/logout")
     public ApiResponse<SuccessStatus> logout() {
         String accessToken = jwtTokenProvider.resolveAccessToken();
-
         userService.logout(accessToken);
         return ApiResponse.onSuccess(SuccessStatus._OK);
     }
@@ -58,7 +59,6 @@ public class UserController {
     @PostMapping("/local/login")
     public ApiResponse<UserDtoRes.UserLoginRes> loginLocal(
             @RequestBody @Valid UserReqDto.LoginReq req) {
-
         var res = userService.loginLocal(req.getEmail(), req.getPassword());
         return ApiResponse.onSuccess(res);
     }
@@ -69,9 +69,7 @@ public class UserController {
     public ApiResponse<UserDtoRes.UserLoginRes> refresh() {
         // 앱은 헤더로 리플레시 토큰 확인, 액세스 토큰은 확인 x
         String refreshToken = jwtTokenProvider.resolveRefreshToken();
-
         var res = userService.rotateTokensForApp(refreshToken);
-
         return ApiResponse.onSuccess(res);
     }
 }

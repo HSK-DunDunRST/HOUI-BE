@@ -15,8 +15,5 @@ public class NoticeController {
 
     private final NoticeServiceImpl noticeServiceImpl;
 
-    @GetMapping
-    public ApiResponse<NoticeResDto> getNotice() {
-        return ApiResponse.onSuccess(noticeServiceImpl.getNoticeAtLast());
-    }
+
 }
