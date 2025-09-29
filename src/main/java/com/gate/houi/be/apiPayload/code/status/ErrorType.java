@@ -34,13 +34,18 @@ public enum ErrorType implements BaseErrorCode {
     GOOGLE_AUTHENTICATION_FAILED(HttpStatus.UNAUTHORIZED, "AUTH4007","구글 로그인에 실패했어요."),
     EMAIL_REGISTERED_WITH_LOCAL(HttpStatus.BAD_REQUEST, "AUTH4008", "이미 로컬 계정으로 가입되어 있습니다."),
     LOCAL_LOGIN_FOR_GOOGLE_EMAIL(HttpStatus.UNAUTHORIZED, "USER401", "구글 조직 계정으로 로그인해주세요."),
+
     // 사용자 관련
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER404", "사용자를 찾을 수 없습니다."),
     USER_INFO_NOT_FOUND(HttpStatus.NOT_FOUND, "USERINFO404", "저장된 사용자 정보가 없습니다."),
     UNAUTHORIZED(HttpStatus.FORBIDDEN, "USERINFO403", "정보 수정 권한이 없습니다."),
-    // 공직사항 조회
-    NOT_FOUND_NOTICE_DATA(HttpStatus.NOT_FOUND, "NOTICE404", "불러올 공지사항이 없어요.");
 
+    // 공직사항 조회
+    NOT_FOUND_NOTICE_DATA(HttpStatus.NOT_FOUND, "NOTICE404", "불러올 공지사항이 없어요."),
+
+    // 서명 응답
+    SIGNATURE_INTERNAL_SERVER_ERROR(HttpStatus.BAD_REQUEST, "SIGN400", "서명을 저장하지 못했어요."),
+    SIGNATURE_NOT_FOUND(HttpStatus.NOT_FOUND, "SIGN404", "서명이 존재하지 않아요.");
 
     private final HttpStatus httpStatus;
     private final String code;
