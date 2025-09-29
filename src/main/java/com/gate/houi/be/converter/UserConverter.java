@@ -8,11 +8,9 @@ import org.springframework.stereotype.Component;
 public class UserConverter {
     public static UserDtoRes.UserLoginRes signInRes(UserEntity userEntity, String accessToken, String refreshToken, String name) {
         return UserDtoRes.UserLoginRes.builder()
-                .id(userEntity.getId())
-                .email(userEntity.getUserEmail())
+                .name(name)
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
-                .name(name)
                 .build();
     }
 }

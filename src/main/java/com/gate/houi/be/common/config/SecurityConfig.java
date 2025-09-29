@@ -50,10 +50,10 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/v1/login/page/**",
                                 "/api/v1/login/google/callback",
-                                "/api/users/google-login",
-                                "/api/users/local/signup",
-                                "/api/users/local/login",
-                                "/api/users/refresh"
+                                "/api/v1/oauth/google-login",
+                                "/api/v1/oauth/local/signup",
+                                "/api/v1/oauth/local/login",
+                                "/api/v1/oauth/refresh"
                         ).permitAll()
 
                         // 정적 리소스 (이미지, CSS, JS, webjars 등)

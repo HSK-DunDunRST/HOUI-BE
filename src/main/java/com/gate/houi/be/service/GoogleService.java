@@ -14,7 +14,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.util.Collections;
 import java.util.Objects;
+
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.gson.GsonFactory;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,7 +30,6 @@ import java.util.Objects;
 public class GoogleService {
 
     private static final String GOOGLE_TOKEN_URL_HOST = "https://oauth2.googleapis.com";
-    private static final String GOOGLE_USERINFO_URL_HOST = "https://www.googleapis.com/oauth2/v3";
 
     @Value("${spring.security.oauth2.client.registration.google.client-id}")
     private String clientId;
@@ -34,9 +41,9 @@ public class GoogleService {
     private String redirectUri;
 
     /**
-     * 구글 OAuth 토큰 교환 (authorization code → access token)
+     * 구글 OAuth 토큰 교환 (authorization code → id_token)
      */
-    public String getAccessTokenFromGoogle(String code) {
+    public String getIdTokenFromGoogle(String code) {
         GoogleTokenResDto response = WebClient.create(GOOGLE_TOKEN_URL_HOST).post()
                 .uri(uriBuilder -> uriBuilder
                         .scheme("https")
@@ -56,34 +63,43 @@ public class GoogleService {
                 .bodyToMono(GoogleTokenResDto.class)
                 .block();
 
-        String accessToken = Objects.requireNonNull(response).getAccessToken();
-        log.info("Google Access Token : {}", accessToken);
-        return accessToken;
+        return Objects.requireNonNull(response).getIdToken();
     }
 
     /**
-     * 구글 사용자 정보 가져오기 (access token → userinfo)
+     * 구글 ID 토큰 검증 및 사용자 정보 추출
      */
-    public GoogleUserInfoResDto getUserInfo(String accessToken) {
-        log.info("Google Access Token : {}", accessToken);
-        GoogleUserInfoResDto userInfo = WebClient.create(GOOGLE_USERINFO_URL_HOST)
-                .get()
-                .uri(uriBuilder -> uriBuilder
-                        .scheme("https")
-                        .path("/userinfo")
-                        .build(true))
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
-                .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError,
-                        clientResponse -> Mono.error(new BaseException(ErrorType.GOOGLE_AUTHENTICATION_FAILED)))
-                .onStatus(HttpStatusCode::is5xxServerError,
-                        clientResponse -> Mono.error(new BaseException(ErrorType.GOOGLE_AUTHENTICATION_FAILED)))
-                .bodyToMono(GoogleUserInfoResDto.class)
-                .block();
+    public GoogleUserInfoResDto verifyAndParseIdToken(String idTokenString) {
+        try {
+            GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(
+                    new NetHttpTransport(),
+                    new GsonFactory()
+            )
+                    .setAudience(Collections.singletonList(clientId))
+                    .build();
 
-        log.info("Google Authentication Successful");
-        log.info("Google User Info : name={}, email={}", userInfo.getName(),userInfo.getEmail());
+            GoogleIdToken idToken = verifier.verify(idTokenString);
+            if (idToken != null) {
+                GoogleIdToken.Payload payload = idToken.getPayload();
 
-        return userInfo;
+                String userId = payload.getSubject();   // Google user ID
+                String email = payload.getEmail();
+                String name = (String) payload.get("name");
+
+                log.info("Google ID Token verified: userId={}, email={}", userId, email);
+
+                return GoogleUserInfoResDto.builder()
+                        .id(userId)
+                        .email(email)
+                        .name(name)
+                        .build();
+
+            } else {
+                throw new BaseException(ErrorType.GOOGLE_AUTHENTICATION_FAILED);
+            }
+
+        } catch (GeneralSecurityException | IOException e) {
+            throw new BaseException(ErrorType.GOOGLE_AUTHENTICATION_FAILED);
+        }
     }
 }
