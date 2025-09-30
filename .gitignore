@@ -38,3 +38,6 @@ out/
 
 ### Macbook File System ###
 .DS_Store
+
+### Signatrue Files
+*.png
