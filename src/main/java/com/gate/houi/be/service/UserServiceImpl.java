@@ -9,6 +9,7 @@ import com.gate.houi.be.dto.req.UserReqDto;
 import com.gate.houi.be.dto.res.GoogleUserInfoResDto;
 import com.gate.houi.be.dto.res.UserDtoRes;
 import com.gate.houi.be.entity.UserEntity;
+import com.gate.houi.be.entity.enums.Campus;
 import com.gate.houi.be.entity.enums.Provider;
 import com.gate.houi.be.entity.enums.UserRole;
 import com.gate.houi.be.repository.UserRepository;
@@ -73,7 +74,7 @@ public class UserServiceImpl implements UserService {
                                                  String email, String rawPassword) {
         UserDtoRes.UserLoginRes res = loginLocal(email, rawPassword); // 기존 검증/AT·RT 발급 로직 재사용
 
-        // 리프레시 토큰 쿠키 저장 (카카오 웹과 동일)
+        // 리프레시 토큰 쿠키 저장 (구글 웹과 동일)
         CookieUtil.deleteCookie(request, response, "refreshToken");
         CookieUtil.addCookie(response, "refreshToken", res.getRefreshToken(),
                 JwtTokenProvider.REFRESH_TOKEN_VALID_TIME_IN_COOKIE);
@@ -88,7 +89,7 @@ public class UserServiceImpl implements UserService {
             throw new BaseException(ErrorType._BAD_REQUEST);
         }
 
-        // 이미 '카카오'로 존재하는 이메일이면 가입 불가
+        // 이미 '구글 조직'로 존재하는 이메일이면 가입 불가
         userRepository.findByUserEmailAndOauthProvider(email, Provider.GOOGLE).ifPresent(u -> {
             throw new BaseException(ErrorType.EMAIL_REGISTERED_WITH_GOOGLE);
         });
@@ -102,6 +103,7 @@ public class UserServiceImpl implements UserService {
                 .userEmail(email)
                 .userName(name)
                 .userPwd(passwordEncoder.encode(rawPassword))
+                .userCampus(null)
                 .oauthProvider(Provider.LOCAL)
                 .role(UserRole.ADMIN)
                 .build();
@@ -124,7 +126,6 @@ public class UserServiceImpl implements UserService {
         CookieUtil.addCookie(response, "refreshToken", null, 0);
     }
 
-
     // 구글 조직 로그인 시 신규 회원가입 또는 기존 회원 조회
     public UserEntity googleSignup(GoogleUserInfoResDto userInfo) {
         log.info("googleSignup userInfo = {}, {}, {}", userInfo.getId(), userInfo.getName(), userInfo.getEmail());
@@ -138,6 +139,7 @@ public class UserServiceImpl implements UserService {
                             .userName(userInfo.getName())
                             .studentId(studentId)
                             .userPwd(null)
+                            .userCampus(Campus.ASAN)
                             .oauthProvider(Provider.GOOGLE)
                             .role(UserRole.STUDENT)
                             .build();
@@ -180,6 +182,7 @@ public class UserServiceImpl implements UserService {
         return UserDtoRes.UserInfoRes.builder()
                 .userName(userEntity.getUserName())
                 .studentId(userEntity.getStudentId())
+                .campusType(userEntity.getUserCampus().toString())
                 .build();
     }
 

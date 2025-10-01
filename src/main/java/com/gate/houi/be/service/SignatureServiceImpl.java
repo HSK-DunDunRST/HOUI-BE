@@ -43,8 +43,8 @@ public class SignatureServiceImpl implements SignatureService {
         }
 
         // 파일 확장자 추출
-        String originalFilename = file.getOriginalFilename();
         String fileExtension = "";
+        String originalFilename = file.getOriginalFilename();
         if (originalFilename != null && originalFilename.contains(".")) {
             fileExtension = originalFilename.substring(originalFilename.lastIndexOf(".")).toLowerCase();
         }

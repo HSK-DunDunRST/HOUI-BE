@@ -1,6 +1,7 @@
 package com.gate.houi.be.entity;
 
 import com.gate.houi.be.entity.common.BaseTimeEntity;
+import com.gate.houi.be.entity.enums.Campus;
 import com.gate.houi.be.entity.enums.Provider;
 import com.gate.houi.be.entity.enums.UserRole;
 import jakarta.persistence.*;
@@ -42,4 +43,7 @@ public class UserEntity extends BaseTimeEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserRole role;
+
+    @Column(name = "user_campus")
+    private Campus userCampus;
 }
