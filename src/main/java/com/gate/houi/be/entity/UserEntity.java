@@ -45,5 +45,6 @@ public class UserEntity extends BaseTimeEntity {
     private UserRole role;
 
     @Column(name = "user_campus")
+    @Enumerated(EnumType.STRING)
     private Campus userCampus;
 }

@@ -178,14 +178,26 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = userRepository.findById(userId)
                 .orElseThrow(() -> new BaseException(ErrorType.USER_NOT_FOUND));
 
-        // 4. DTO로 변환
+        if(userEntity.getUserCampus().toString().equals(Campus.ASAN.toString())) {
+            // 4. DTO로 변환
+            return UserDtoRes.UserInfoRes.builder()
+                    .userName(userEntity.getUserName())
+                    .studentId(userEntity.getStudentId())
+                    .campusType("아산 캠퍼스")
+                    .build();
+        } else if(userEntity.getUserCampus().toString().equals(Campus.CHEONAN.toString())) {
+            // 4. DTO로 변환
+            return UserDtoRes.UserInfoRes.builder()
+                    .userName(userEntity.getUserName())
+                    .studentId(userEntity.getStudentId())
+                    .campusType("천안 캠퍼스")
+                    .build();
+        }
         return UserDtoRes.UserInfoRes.builder()
                 .userName(userEntity.getUserName())
                 .studentId(userEntity.getStudentId())
-                .campusType(userEntity.getUserCampus().toString())
                 .build();
     }
-
 
     public UserDtoRes.UserLoginRes rotateTokensForApp(String refreshToken) {
         if (refreshToken == null || refreshToken.isBlank()) {
