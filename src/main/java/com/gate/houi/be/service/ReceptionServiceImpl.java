@@ -26,7 +26,7 @@ public class ReceptionServiceImpl implements ReceptionService {
 
     @Override
     @Transactional
-    public void RegisterReception(ReceptionReqDto receptionReqDto, Long userId) {
+    public MainResDto.WaitInformation RegisterReception(ReceptionReqDto receptionReqDto, Long userId) {
         // 필수 데이터(진료 증상)가 전달되지 않았으면 예외 발생
         if (receptionReqDto.getSymptomsContent().isEmpty()) {
             throw new BaseException(ErrorType.RESOURCE_NOT_FOUND);
@@ -44,6 +44,8 @@ public class ReceptionServiceImpl implements ReceptionService {
                 .orElseThrow(() -> new BaseException(ErrorType._INTERNAL_SERVER_ERROR));
 
         receptionRepository.save(receptionEntity);
+
+        return ReceptionConverter.toWait(waitCount().getWaitCount());
     }
 
     @Override

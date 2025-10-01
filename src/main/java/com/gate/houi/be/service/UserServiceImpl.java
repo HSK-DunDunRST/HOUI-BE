@@ -33,6 +33,7 @@ public class UserServiceImpl implements UserService {
     // 테스트 용 로그인 처리: 이메일로 유저 찾고 토큰 발급
     @Transactional(readOnly = true)
     public UserDtoRes.UserLoginRes login(HttpServletRequest request, HttpServletResponse response, UserReqDto.LoginReq loginDto) {
+        if(loginDto == null) { throw new BaseException(ErrorType.MISSING_FILED_ERROR);}
         String email = loginDto.getEmail();
 
         UserEntity userEntity = userRepository.findByUserEmail(email)
@@ -177,7 +178,7 @@ public class UserServiceImpl implements UserService {
 
         // 4. DTO로 변환
         return UserDtoRes.UserInfoRes.builder()
-                .studentName(userEntity.getUserName())
+                .userName(userEntity.getUserName())
                 .studentId(userEntity.getStudentId())
                 .build();
     }

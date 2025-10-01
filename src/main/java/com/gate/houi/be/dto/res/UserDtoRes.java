@@ -23,6 +23,6 @@ public class UserDtoRes {
     @JsonInclude(JsonInclude.Include.NON_NULL) // null 필드는 응답에서 제외
     public static class UserInfoRes {
         private String studentId;
-        private String studentName;
+        private String userName;
     }
 }

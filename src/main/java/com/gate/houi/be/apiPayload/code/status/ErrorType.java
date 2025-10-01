@@ -28,6 +28,7 @@ public enum ErrorType implements BaseErrorCode {
     _UNAUTHORIZED(HttpStatus.UNAUTHORIZED,"COMMON401","인증이 필요합니다."),
     _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
     RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "RESOURCE404", "리소스를 찾을 수 없습니다."),
+    MISSING_FILED_ERROR(HttpStatus.NOT_IMPLEMENTED, "FIELD501", "필수 파라미터가 누락되었어요."),
 
     //로그인 관련
     EMAIL_REGISTERED_WITH_GOOGLE(HttpStatus.BAD_REQUEST, "AUTH4006", "해당 이메일은 구글 조직 계정으로 가입되어 있습니다."),
