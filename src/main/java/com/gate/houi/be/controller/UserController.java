@@ -20,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -63,6 +62,16 @@ public class UserController {
         return ApiResponse.onSuccess(res);
     }
 
+    @Operation(summary = "로컬 회원가입(앱)", description = "이메일/비밀번호로 회원가입하고 토큰 발급")
+    @PostMapping("/local/signup")
+    public ApiResponse<UserDtoRes.UserLoginRes> signUpLocal(
+            @RequestBody @Valid UserReqDto.SignUpReq req) {
+
+        userService.signUpLocal(req.getEmail(), req.getPassword(), req.getName());
+        // 가입 직후 자동 로그인처럼 토큰 발급
+        var res = userService.loginLocal( req.getEmail(), req.getPassword());
+        return ApiResponse.onSuccess(res);
+    }
 
     @Operation(summary = "토큰 재발급(앱)", description = "리프레시 토큰을 사용하여 새로운 액세스/리프레시 토큰 발급")
     @PostMapping("/refresh")

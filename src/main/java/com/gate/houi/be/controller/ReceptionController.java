@@ -3,6 +3,7 @@ package com.gate.houi.be.controller;
 import com.gate.houi.be.apiPayload.ApiResponse;
 import com.gate.houi.be.common.security.JwtTokenProvider;
 import com.gate.houi.be.dto.req.ReceptionReqDto;
+import com.gate.houi.be.dto.res.MainResDto;
 import com.gate.houi.be.service.ReceptionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,9 +20,8 @@ public class ReceptionController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/register")
-    public ApiResponse<String> register(@RequestBody ReceptionReqDto receptionReqDto) {
+    public ApiResponse<MainResDto.WaitInformation> register(@RequestBody ReceptionReqDto receptionReqDto) {
         Long userId = jwtTokenProvider.getUserIdFromToken();
-        receptionService.RegisterReception(receptionReqDto, userId);
-        return ApiResponse.onSuccess("성공적으로 접수가 되었어요.");
+        return ApiResponse.onSuccess(receptionService.RegisterReception(receptionReqDto, userId));
     }
 }
