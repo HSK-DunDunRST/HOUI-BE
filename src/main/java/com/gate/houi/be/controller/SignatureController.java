@@ -3,7 +3,7 @@ package com.gate.houi.be.controller;
 import com.gate.houi.be.apiPayload.ApiResponse;
 import com.gate.houi.be.common.security.JwtTokenProvider;
 import com.gate.houi.be.dto.res.SignatureResDto;
-import com.gate.houi.be.service.SignatureService;
+import com.gate.houi.be.service.SignatureServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,7 +15,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class SignatureController {
 
-    private final SignatureService signatureService;
+    private final SignatureServiceImpl signatureService;
     private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/upload")

@@ -24,5 +24,6 @@ public class UserDtoRes {
     public static class UserInfoRes {
         private String studentId;
         private String userName;
+        private String campusType;
     }
 }
