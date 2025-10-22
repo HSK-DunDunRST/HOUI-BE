@@ -1,5 +1,6 @@
 package com.gate.houi.be.service;
 
+import com.gate.houi.be.common.security.JwtTokenProvider;
 import com.gate.houi.be.dto.res.MainResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,9 +12,11 @@ public class MainService {
 
     private final NoticeService noticeService;
     private final ReceptionService receptionService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional(readOnly = true)
     public MainResDto getStatus(){
+
         MainResDto.NoticeSummary latestNotice = noticeService.getNoticeAtLast();
         MainResDto.WaitInformation waitCount = receptionService.waitCount();
 
