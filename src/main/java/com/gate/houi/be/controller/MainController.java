@@ -15,11 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MainController {
     private final MainService mainService;
-    private final JwtTokenProvider jwtTokenProvider;
 
     @GetMapping
     public ApiResponse<MainResDto> getStatus() {
-        jwtTokenProvider.getUserIdFromToken();
         return ApiResponse.onSuccess(mainService.getStatus());
     }
 }

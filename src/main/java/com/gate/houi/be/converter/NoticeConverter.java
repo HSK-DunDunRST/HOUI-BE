@@ -10,4 +10,13 @@ public class NoticeConverter {
                 .noticeTitle(noticeEntity.getNoticeTitle())
                 .build();
     }
+
+    public static NoticeResDto toMore(NoticeEntity noticeEntity) {
+        return NoticeResDto.builder()
+                .noticeId(noticeEntity.getId())
+                .noticeTitle(noticeEntity.getNoticeTitle())
+                .noticeContent(noticeEntity.getNoticeContent())
+                .noticeCreatedAt(noticeEntity.getCreatedAt().toString())
+                .build();
+    }
 }

@@ -5,6 +5,7 @@ import com.gate.houi.be.apiPayload.code.status.ErrorType;
 import com.gate.houi.be.converter.NoticeConverter;
 import com.gate.houi.be.dto.res.MainResDto;
 import com.gate.houi.be.dto.res.NoticeResDto;
+import com.gate.houi.be.entity.NoticeEntity;
 import com.gate.houi.be.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,14 @@ public class NoticeServiceImpl implements NoticeService {
         return noticeRepository.findFirstByOrderByCreatedAtDesc()
                 .map(NoticeConverter::toLast)
                 .orElseThrow(() -> new BaseException(ErrorType.NOT_FOUND_NOTICE_DATA));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public NoticeResDto getNoticeMore() {
+       return noticeRepository.findFirstByOrderByCreatedAtDesc()
+               .map(NoticeConverter::toMore)
+               .orElseThrow(() -> new BaseException(ErrorType.NOT_FOUND_NOTICE_DATA));
     }
 
 }
