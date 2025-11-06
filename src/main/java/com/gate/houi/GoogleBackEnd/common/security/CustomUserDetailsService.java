@@ -1,9 +1,9 @@
 package com.gate.houi.GoogleBackEnd.common.security;
 
-import com.gate.houi.be.apiPayload.code.exception.BaseException;
-import com.gate.houi.be.apiPayload.code.status.ErrorType;
-import com.gate.houi.be.entity.UserEntity;
-import com.gate.houi.be.repository.UserRepository;
+import com.gate.houi.GoogleBackEnd.apiPayload.code.exception.BaseException;
+import com.gate.houi.GoogleBackEnd.apiPayload.code.status.ErrorType;
+import com.gate.houi.GoogleBackEnd.entity.UserEntity;
+import com.gate.houi.GoogleBackEnd.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

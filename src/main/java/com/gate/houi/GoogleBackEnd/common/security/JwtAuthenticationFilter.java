@@ -2,8 +2,8 @@ package com.gate.houi.GoogleBackEnd.common.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.gate.houi.be.apiPayload.ApiResponse;
-import com.gate.houi.be.apiPayload.code.status.ErrorType;
+import com.gate.houi.GoogleBackEnd.apiPayload.ApiResponse;
+import com.gate.houi.GoogleBackEnd.apiPayload.code.status.ErrorType;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,7 +1,8 @@
 package com.gate.houi.GoogleBackEnd.common.config;
 
-import com.gate.houi.be.common.security.JwtAuthenticationFilter;
-import com.gate.houi.be.common.security.JwtTokenProvider;
+import com.gate.houi.GoogleBackEnd.common.security.JwtAuthenticationFilter;
+import com.gate.houi.GoogleBackEnd.common.security.JwtTokenProvider;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,9 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;

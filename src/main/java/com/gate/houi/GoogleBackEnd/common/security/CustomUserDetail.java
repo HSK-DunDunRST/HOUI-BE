@@ -1,6 +1,6 @@
 package com.gate.houi.GoogleBackEnd.common.security;
 
-import com.gate.houi.be.entity.UserEntity;
+import com.gate.houi.GoogleBackEnd.entity.UserEntity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

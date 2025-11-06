@@ -1,7 +1,7 @@
 package com.gate.houi.GoogleBackEnd.common.security;
 
-import com.gate.houi.be.apiPayload.code.exception.BaseException;
-import com.gate.houi.be.apiPayload.code.status.ErrorType;
+import com.gate.houi.GoogleBackEnd.apiPayload.code.exception.BaseException;
+import com.gate.houi.GoogleBackEnd.apiPayload.code.status.ErrorType;
 import io.jsonwebtoken.*;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
