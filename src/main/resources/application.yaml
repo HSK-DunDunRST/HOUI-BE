@@ -62,4 +62,4 @@ logging:
 app:
   file:
     base-url: ${FILE_URL}  # 운영에서는 실제 도메인 넣기
-    upload-dir: SignatureUpload
+    upload-dir: uploads/signature
