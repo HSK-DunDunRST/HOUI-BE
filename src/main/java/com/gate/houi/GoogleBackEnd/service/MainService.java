@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MainService {
 
     private final NoticeService noticeService;
+    private final ReceptionService receptionService;
 
     @Transactional(readOnly = true)
     public MainResDto getStatus(){
@@ -18,7 +19,7 @@ public class MainService {
 
         return MainResDto.builder()
                 .noticeSummary(latestNotice)
-                .waitInformation(null)
+                .waitInformation(receptionService.waitCount())
                 .build();
     }
 }
