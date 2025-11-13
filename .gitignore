@@ -38,3 +38,4 @@ out/
 
 ### MacOS File System
 .DS_Store
+*.png
